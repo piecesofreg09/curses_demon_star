@@ -5,6 +5,9 @@ import numpy as np
 import math
 
 import basic_settings
+from fires import fires
+from enemies import enemies
+from fighter import fighter
 
 color_changable = False
 blocks_example = '■■■■■■■██████'
@@ -30,14 +33,17 @@ def draw_menu(stdscr):
     cursor_y = 40
 
     init_screen(stdscr)
-
+    height, width = stdscr.getmaxyx()
+    scrnresolution = [height, width]
 
     # the list of fires contains the positions of the fires
-    fires = []
+    #fires = []
     # the list of enemies contains the positions of the centers
     # of the enemies
-    enemies = []
-
+    #enemies = []
+    fires_obj = fires(stdscr, scrnresolution, color_changable)
+    enemies_obj = enemies(stdscr, scrnresolution, color_changable)
+    fighter_obj = fighter(stdscr, scrnresolution, color_changable, cursor_y, cursor_x)
 
 
 
@@ -54,9 +60,7 @@ def draw_menu(stdscr):
 
         # Initialization
         stdscr.clear()
-        height, width = stdscr.getmaxyx()
-
-        scrnresolution = [height, width]
+        
 
         # get the positions of the key, then restrict it to be within the screen area
         if k == curses.KEY_DOWN:
@@ -94,16 +98,25 @@ def draw_menu(stdscr):
 
         # move cursor, move fighter
         stdscr.move(cursor_y, cursor_x)
-        moveFighter(stdscr, cursor_y, cursor_x)
+        #moveFighter(stdscr, cursor_y, cursor_x)
+        fighter_obj.move_fighter(cursor_y, cursor_x)
         # update the list of fired bullets
-        fires = updateFire(stdscr, fires, scrnresolution, enemies)
-        enemies = updateEnemies(stdscr, fires, scrnresolution, enemies)
+        #fires = updateFire(stdscr, fires, scrnresolution, enemies)
+        fires_obj.update_fires()
+        
+        #enemies = updateEnemies(stdscr, fires, scrnresolution, enemies)
+        enemies_obj.update_enemies()
         # initiate a new bullets
         if k == 122:
-            fires = fire(stdscr, cursor_y, cursor_x, fires, start_y, scrnresolution)
+            #fires = fire(stdscr, cursor_y, cursor_x, fires, start_y, scrnresolution)
+            fires_obj.fire_once(cursor_y, cursor_x)
         
         if k == 120:
-            enemies = createEnemy(stdscr, 20, 30, enemies, scrnresolution)
+            #enemies = createEnemy(stdscr, 20, 30, enemies, scrnresolution)
+            ry = np.random.randint(5, np.floor(height / 2))
+            rx = np.random.randint(3, width - 3)
+            #print([ry, rx])
+            enemies_obj.create_enemy(ry, rx)
         
         # Refresh the screen
         stdscr.refresh()
