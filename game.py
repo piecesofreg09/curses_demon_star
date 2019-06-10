@@ -57,9 +57,9 @@ def draw_menu(stdscr):
     height, width = stdscr.getmaxyx()
     reso = [height, width]
 
-    stats = {'score': 0, 'lives': 30}
+    stats = {'score': 0, 'lives': 3000}
     lives = stats['lives']
-    lives_old = status['lives']
+    lives_old = stats['lives']
     enemies_obj = Enemies(stdscr, reso, color_changable)
     fighter_obj = Fighter(stdscr, reso, color_changable, cursor_y, cursor_x)
     
@@ -90,7 +90,7 @@ def draw_menu(stdscr):
             'L', 'L', 'U', 'U', 'R', 'U', 'D', 'N', 
             'D']), random.choice([True, False, False, False])])
         
-    for i in range(200):
+    for i in range(200000):
         move_sets.append([random.choice(['D', 'U', 'L', 'R', 'N']),
             random.choice([True, False, False, False])])
 
@@ -118,7 +118,7 @@ def draw_menu(stdscr):
             fighter_obj.fire_once([cursor_y - 2, cursor_x])
         
         ene_appear_count += 1
-        if ene_appear_count % 20 == 1:
+        if ene_appear_count % 10 == 1:
             
             ene_total_count += 1
             

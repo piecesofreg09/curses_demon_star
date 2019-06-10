@@ -1,7 +1,7 @@
 import pickle
 import pandas as pd
 import numpy as np
-import math
+import math, os
 
 move_map = {'U': [-1, 0], 'D': [1, 0], 
     'L': [0, -1], 'R': [0, 1], 'N': [0, 0]}
@@ -39,10 +39,10 @@ def update_basic(reso, fighter_obj, enemies_obj, lives, lives_old, move, data, t
     
     
 def write_basic(data, target):
-    data_dir = os.path.join(os.curdir, 'Data')
-    with open(data_dir, 'rb') as out_file:
+    data_dir = os.path.join(os.curdir, 'Data', 'basic_data.pkl')
+    with open(data_dir, 'wb') as out_file:
         ot = {'data': pd.DataFrame(data), 'target': pd.DataFrame(target)}
-        pickle.dump(ot, input_file)
+        pickle.dump(ot, out_file)
     
     pass
 
