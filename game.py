@@ -10,7 +10,9 @@ from collisions_update import collision
 
 color_changable = True
 data_basic = []
+data_basic_short = []
 target_basic = []
+target_basic_short = []
 
 move_direction_maps = {'U': np.array([-1.0, 0.0]),
     'D': np.array([1.0, 0.0]),
@@ -39,10 +41,10 @@ def cursor_update(k, cursor_x, cursor_y, reso):
     
     height, width = reso
     
-    cursor_x = max(2, cursor_x)
-    cursor_x = min(width - 2, cursor_x)
+    cursor_x = max(8, cursor_x)
+    cursor_x = min(width - 8, cursor_x)
 
-    cursor_y = max(4, cursor_y)
+    cursor_y = max(10, cursor_y)
     cursor_y = min(height - 4, cursor_y)
     
     return cursor_x, cursor_y
@@ -57,7 +59,7 @@ def draw_menu(stdscr):
     height, width = stdscr.getmaxyx()
     reso = [height, width]
 
-    stats = {'score': 0, 'lives': 3000}
+    stats = {'score': 0, 'lives': 30000}
     lives = stats['lives']
     lives_old = stats['lives']
     enemies_obj = Enemies(stdscr, reso, color_changable)
@@ -118,15 +120,18 @@ def draw_menu(stdscr):
             fighter_obj.fire_once([cursor_y - 2, cursor_x])
         
         ene_appear_count += 1
-        if ene_appear_count % 10 == 1:
+        if ene_appear_count % 2 == 1:
             
             ene_total_count += 1
             
             ry = np.floor(height / 10)
-            rx = (width - 2) / 8 * (ene_total_count % 7 + 1)
-            
+            '''
+            rx = (width - 20) / np.random.randint(10, 15) * \
+                (ene_total_count % np.random.randint(5, 11) + 1) + 10 + \
+                np.random.choice([-1, 1]) * np.random.randint(0, 3)
+            '''
             #ry = np.random.randint(5, np.floor(height / 2))
-            #rx = np.random.randint(3, width - 3)
+            rx = np.random.randint(3, width - 3)
             pos = [ry, rx]
             enemies_obj.create_one_enemy(pos)
         
@@ -147,13 +152,16 @@ def draw_menu(stdscr):
         
         lives = stats['lives']
         
-        generate_input_data.update_basic(reso, fighter_obj, enemies_obj, lives, lives_old, move, data_basic, target_basic)
+        generate_input_data.update_basic(reso, fighter_obj, 
+            enemies_obj, lives, lives_old, move, data_basic, target_basic)
+        generate_input_data.update_basic_short(reso, fighter_obj, 
+            enemies_obj, lives, lives_old, move, data_basic_short, target_basic_short)
         
         lives_old = lives
         
         # Refresh the screen
         stdscr.refresh()
-        curses.napms(5)
+        curses.napms(1)
 
         # Wait for next input
         k = stdscr.getch()
@@ -161,6 +169,7 @@ def draw_menu(stdscr):
     else:
         k = stdscr.getch()
         generate_input_data.write_basic(data_basic, target_basic)
+        generate_input_data.write_basic_short(data_basic_short, target_basic_short)
         while (k != ord('q') and k != ord('Q')):
             stdscr.clear()
             stdscr.attron(curses.A_BOLD)
