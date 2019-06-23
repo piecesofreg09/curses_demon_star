@@ -84,7 +84,7 @@ class Fighter:
     def display_fighter(self):
         height = self.reso[0]
         
-        self.stdscr.addstr(height - 4, 0, 
+        self.stdscr.addstr(height - 3, 0, 
             "Fighter at [{}, {}]".format(round(self.pos[1]), round(self.pos[0])))
         
         

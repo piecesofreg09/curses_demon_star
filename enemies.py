@@ -144,5 +144,5 @@ class Enemies:
         to_display = self.enemies[:5]
         to_display_sep_str = ['[{}, {}] '.format(round(ene.pos[1]), round(ene.pos[0])) for ene in to_display]
         to_display_str = ''.join(to_display_sep_str)
-        self.stdscr.addstr(height - 3, 0, 
+        self.stdscr.addstr(height - 2, 0, 
             "{} enemy/enemies at {}".format(len(self.enemies), to_display_str))
