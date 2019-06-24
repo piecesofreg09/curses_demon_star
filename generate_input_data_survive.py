@@ -5,6 +5,7 @@ import math, os
 import logging
 from collections import Counter
 import joblib
+import random
 
 move_map = {'U': [-1, 0], 'D': [1, 0], 
     'L': [0, -1], 'R': [0, 1], 'N': [0, 0]}
@@ -69,7 +70,7 @@ class SurvivalDataUpdaterWriter:
             if self.type_dict[type_s] == True:
                 self.update_funcs_pre[type_s](reso,
                     fighter_obj, enemies_obj, move)
-        if self.update_d_pre % 20 == 0:
+        if self.update_d_pre % 1000 == 0:
             logger.info('%d pre records updated', self.update_d_pre)
 
     def update_mother_post(self, lives, lives_old):
@@ -78,7 +79,7 @@ class SurvivalDataUpdaterWriter:
             if self.type_dict[type_s] == True:
                 self.update_funcs_post[type_s](lives, lives_old)
         
-        if self.update_d_post % 20 == 0:
+        if self.update_d_post % 1000 == 0:
             logger.info('%d post records updated', self.update_d_post)
         
     
@@ -215,62 +216,8 @@ class SurvivalDataUpdaterWriter:
         
         type_s = 'pics'
         
-        # window size is the window to look above
-        # height should be small than 10
-        
-        window_size = [10, 14]
-        window_height, window_width = window_size
-        
-        height, width = reso
-        topedoes = enemies_obj.topedoes
-        enemies = enemies_obj.enemies
-        fighter = fighter_obj
-        
-        temp_topedoes = [0 for i in range(width)]
-        temp_enemies = [0 for i in range(width)]
-        
-        fighter_y, fighter_x = fighter.pos
-        
-        for i, topedo in enumerate(topedoes):
-            posy, posx = topedo.pos
-            posy = math.floor(posy)
-            posx = math.floor(posx)
-            
-            if posy <= fighter_y:
-                temp_topedoes[posx] = max(temp_topedoes[posx], posy)
-        
-        temp_topedoes = [min((fighter_y - i), window_height) for i in temp_topedoes]
-        
-        for i, enemy in enumerate(enemies):
-            posy, posx = enemy.pos
-            posy = math.floor(posy)
-            posx = math.floor(posx)
-            if posy <= fighter_y:
-                temp_enemies[posx] = max(temp_enemies[posx], posy)
-        
-        temp_enemies = [min((fighter_y - i), window_height) for i in temp_enemies]
-        
+        temp = enemy_figher_pics(reso, fighter_obj, enemies_obj)
         move_two_digits = move_map[move[0]]
-        
-        
-        
-        wing_length = 5
-        left_bound = max(fighter_x - wing_length, 0)
-        right_bound = min(fighter_x + wing_length, width)
-        
-        left_wing = fighter_x - left_bound
-        right_wing = right_bound - fighter_x
-        
-        temp_1 = [0 for i in range(2 * wing_length + 1)]
-        temp_1[(wing_length - left_wing): (wing_length + 1)] = temp_topedoes[(fighter_x - left_wing):(fighter_x + 1)]
-        temp_1[(wing_length + 1):(wing_length + right_wing)] = temp_topedoes[(fighter_x + 1):(fighter_x + right_wing)]
-        
-        temp_2 = [0 for i in range(2 * wing_length + 1)]
-        temp_2[(wing_length - left_wing): (wing_length + 1)] = temp_enemies[(fighter_x - left_wing):(fighter_x + 1)]
-        temp_2[(wing_length + 1):(wing_length + right_wing)] = temp_enemies[(fighter_x + 1):(fighter_x + right_wing)]
-        
-        temp = temp_1 + temp_2
-        
         
         self.data[type_s].data.append(temp + move_two_digits)
         
@@ -295,28 +242,46 @@ class SurvivalDataUpdaterWriter:
 
     def generate_more():
         pass
-        
-        
+
+
 class SurvivalPredicter:
     types = ['basic', 'short', 'pics']
     type_dict = {type_s:False for type_s in types}
     
-    def __init__(self, options):
-        self.predicter_funcs = {'basic': self.update_basic_pre,
-            'short': self.update_basic_short_pre, 
-            'pics': self.update_basic_pics_pre}
+    def __init__(self, options, nf=True):
+        self.predicter_funcs = {'basic': self.predict_basic,
+            'short': self.predict_basic_short, 
+            'pics': self.predict_basic_pics}
+        self.nf = nf
+        
+        for type_s in self.types:
+            if type_s in options:
+                self.type_dict[type_s] = True
+                logger.info('%s will be used to create predictions', type_s)
+        pass
     
-    def predict_m(self, reso, fighter_obj, 
-            enemies_obj):
+    def predict_m(self, reso, fighter_obj, enemies_obj):
         
         res = []
         for type_s in self.types:
             if self.type_dict[type_s] == True:
                 temp = self.predicter_funcs[type_s](reso, fighter_obj, enemies_obj)
-                res.append(temp)
+                res.extend(temp)
         
+        #print(res)
+        # the following step is trying to find out the most frequent elements, if
+        # the frequencies are the same for some directions, a random
+        # direction is then returned
         counting_res = Counter(res)
-        return [counting_res.most_common(1)[0][0], False]
+        most_freq = counting_res.most_common(1)[0][1]
+        pot = []
+        
+        for dir, count in dict(counting_res).items():
+            if count == most_freq:
+                pot.append(dir)
+        
+        # the prediction is based on no fires fired from the fighter
+        return random.choice(pot)
         
     def predict_basic(self, reso, fighter_obj, enemies_obj):
         return None
@@ -326,15 +291,84 @@ class SurvivalPredicter:
         pass
     def predict_basic_pics(self, reso, fighter_obj, enemies_obj):
         
-        predicter = joblib.load('model_svc_survive.joblib')
+        
+        if self.nf == True:
+            predicter = joblib.load(os.path.join(os.curdir, 'Models', 'model_svc_survive_nf.joblib'))
+        else:
+            predicter = joblib.load(os.path.join(os.curdir, 'Models', 'model_svc_survive_fs.joblib'))
+        
+        
+        # potent is the potential list of possible movements
+        potent = []
+        
+        temp = enemy_figher_pics(reso, fighter_obj, enemies_obj)
         
         for dir in list(move_map.keys()):
-            move_vector = move_map[dir]
-            
-        
-        return 
+            move_two_digits = move_map[dir]
+            input_data = temp + move_two_digits
+            suggestion = predicter.predict([input_data])
+            if suggestion[0] == 1:
+                potent.append(dir)
+        if potent:
+            return potent
+        else:
+            return random.choice(['D', 'U', 'L', 'R', 'N'])
         pass
         
         
         
+def enemy_figher_pics(reso, fighter_obj, enemies_obj):
+    # window size is the window to look above
+    # height should be small than 10
+    window_size = [10, 14]
+    window_height, window_width = window_size
+    
+    height, width = reso
+    topedoes = enemies_obj.topedoes
+    enemies = enemies_obj.enemies
+    fighter = fighter_obj
+    
+    temp_topedoes = [0 for i in range(width)]
+    temp_enemies = [0 for i in range(width)]
+    
+    fighter_y, fighter_x = fighter.pos
+    
+    for i, topedo in enumerate(topedoes):
+        posy, posx = topedo.pos
+        posy = math.floor(posy)
+        posx = math.floor(posx)
         
+        if posy <= fighter_y:
+            temp_topedoes[posx] = max(temp_topedoes[posx], posy)
+    
+    temp_topedoes = [min((fighter_y - i), window_height) for i in temp_topedoes]
+    
+    for i, enemy in enumerate(enemies):
+        posy, posx = enemy.pos
+        posy = math.floor(posy)
+        posx = math.floor(posx)
+        if posy <= fighter_y:
+            temp_enemies[posx] = max(temp_enemies[posx], posy)
+    
+    temp_enemies = [min((fighter_y - i), window_height) for i in temp_enemies]
+    
+    
+    
+    wing_length = 5
+    left_bound = max(fighter_x - wing_length, 0)
+    right_bound = min(fighter_x + wing_length, width)
+    
+    left_wing = fighter_x - left_bound
+    right_wing = right_bound - fighter_x
+    
+    temp_1 = [0 for i in range(2 * wing_length + 1)]
+    temp_1[(wing_length - left_wing): (wing_length + 1)] = temp_topedoes[(fighter_x - left_wing):(fighter_x + 1)]
+    temp_1[(wing_length + 1):(wing_length + right_wing)] = temp_topedoes[(fighter_x + 1):(fighter_x + right_wing)]
+    
+    temp_2 = [0 for i in range(2 * wing_length + 1)]
+    temp_2[(wing_length - left_wing): (wing_length + 1)] = temp_enemies[(fighter_x - left_wing):(fighter_x + 1)]
+    temp_2[(wing_length + 1):(wing_length + right_wing)] = temp_enemies[(fighter_x + 1):(fighter_x + right_wing)]
+    
+    temp = temp_1 + temp_2
+    
+    return temp

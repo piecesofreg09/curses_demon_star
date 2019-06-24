@@ -1,0 +1,156 @@
+2019-06-24 13:10:52,445 - training_results - INFO - 
+ After survival training using models of : {'basic': False, 'short': False, 'pics': True}
+number of movements: 1363 | score : 0, life consumed: 302 
+
+2019-06-24 13:12:50,757 - training_results - INFO - 
+ Before survival training: 
+number of movements: 8953 | score : 0, life consumed: 2469 
+
+2019-06-24 13:15:46,165 - training_results - INFO - 
+ After survival training using models of : {'basic': False, 'short': False, 'pics': True}
+number of movements: 10883 | score : 0, life consumed: 2235 
+
+2019-06-24 13:18:34,736 - training_results - INFO - 
+ After survival training using models of : {'basic': False, 'short': False, 'pics': True}
+number of movements: 10325 | score : 0, life consumed: 1895 
+
+2019-06-24 13:20:24,543 - training_results - INFO - 
+ Before survival training: 
+number of movements: 10632 | score : 0, life consumed: 2139 
+
+2019-06-24 13:22:23,518 - training_results - INFO - 
+ Before survival training: 
+number of movements: 11801 | score : 0, life consumed: 2233 
+
+2019-06-24 13:25:47,192 - training_results - INFO - 
+ Before survival training: 
+number of movements: 20719 | score : 0, life consumed: 4784 
+
+2019-06-24 13:28:46,423 - training_results - INFO - 
+ After survival training using models of : {'basic': False, 'short': False, 'pics': True}
+number of movements: 11047 | score : 0, life consumed: 2062 
+
+2019-06-24 13:37:57,389 - training_results - INFO - 
+ Before survival training: 
+number of movements: 11041 | score : 0, life consumed: 2357 
+
+2019-06-24 13:41:39,332 - training_results - INFO - 
+ After survival training using models of : {'basic': False, 'short': False, 'pics': True}
+number of movements: 6977 | score : 0, life consumed: 1350 
+
+2019-06-24 16:37:16,135 - training_results - INFO - 
+ Before survival training: 
+number of movements: 1200 | score : 0, life consumed: 274 
+
+2019-06-24 16:37:29,323 - training_results - INFO - 
+ Before survival training: 
+number of movements: 1200 | score : 0, life consumed: 204 
+
+2019-06-24 16:37:42,139 - training_results - INFO - 
+ Before survival training: 
+number of movements: 1200 | score : 0, life consumed: 228 
+
+2019-06-24 16:37:54,392 - training_results - INFO - 
+ Before survival training: 
+number of movements: 1200 | score : 0, life consumed: 291 
+
+2019-06-24 16:38:08,056 - training_results - INFO - 
+ Before survival training: 
+number of movements: 1200 | score : 0, life consumed: 281 
+
+2019-06-24 16:40:11,220 - training_results - INFO - 
+ Before survival training: 
+number of movements: 120 | score : 0, life consumed: 23 
+
+2019-06-24 16:40:12,439 - training_results - INFO - 
+ Before survival training: 
+number of movements: 120 | score : 0, life consumed: 34 
+
+2019-06-24 16:40:13,643 - training_results - INFO - 
+ Before survival training: 
+number of movements: 120 | score : 0, life consumed: 20 
+
+2019-06-24 16:40:14,864 - training_results - INFO - 
+ Before survival training: 
+number of movements: 120 | score : 0, life consumed: 40 
+
+2019-06-24 16:40:16,013 - training_results - INFO - 
+ Before survival training: 
+number of movements: 120 | score : 0, life consumed: 22 
+
+2019-06-24 16:51:27,087 - training_results - INFO - 
+ After survival training using models of : {'basic': False, 'short': False, 'pics': True}
+number of movements: 121 | score : 0, life consumed: 14 
+
+2019-06-24 16:51:28,686 - training_results - INFO - 
+ After survival training using models of : {'basic': False, 'short': False, 'pics': True}
+number of movements: 121 | score : 0, life consumed: 3 
+
+2019-06-24 16:51:30,348 - training_results - INFO - 
+ After survival training using models of : {'basic': False, 'short': False, 'pics': True}
+number of movements: 121 | score : 0, life consumed: 7 
+
+2019-06-24 16:51:31,917 - training_results - INFO - 
+ After survival training using models of : {'basic': False, 'short': False, 'pics': True}
+number of movements: 121 | score : 0, life consumed: 20 
+
+2019-06-24 16:51:33,704 - training_results - INFO - 
+ After survival training using models of : {'basic': False, 'short': False, 'pics': True}
+number of movements: 121 | score : 0, life consumed: 16 
+
+2019-06-24 16:55:19,857 - training_results - INFO - 
+ After survival training using models of : {'basic': False, 'short': False, 'pics': True}
+number of movements: 12001 | score : 0, life consumed: 2448 
+
+2019-06-24 16:58:17,217 - training_results - INFO - 
+ After survival training using models of : {'basic': False, 'short': False, 'pics': True}
+number of movements: 12001 | score : 0, life consumed: 2002 
+
+2019-06-24 17:01:16,469 - training_results - INFO - 
+ After survival training using models of : {'basic': False, 'short': False, 'pics': True}
+number of movements: 12001 | score : 0, life consumed: 2445 
+
+2019-06-24 17:04:16,188 - training_results - INFO - 
+ After survival training using models of : {'basic': False, 'short': False, 'pics': True}
+number of movements: 12001 | score : 0, life consumed: 2263 
+
+2019-06-24 17:07:14,984 - training_results - INFO - 
+ After survival training using models of : {'basic': False, 'short': False, 'pics': True}
+number of movements: 12001 | score : 0, life consumed: 2313 
+
+2019-06-24 17:11:18,638 - training_results - INFO - 
+ Before survival training: 
+number of movements: 12000 | score : 0, life consumed: 2372 
+
+2019-06-24 17:13:41,306 - training_results - INFO - 
+ Before survival training: 
+number of movements: 12000 | score : 0, life consumed: 2770 
+
+2019-06-24 17:16:04,404 - training_results - INFO - 
+ Before survival training: 
+number of movements: 12000 | score : 0, life consumed: 2627 
+
+2019-06-24 17:18:25,721 - training_results - INFO - 
+ Before survival training: 
+number of movements: 12000 | score : 0, life consumed: 2250 
+
+2019-06-24 17:20:39,191 - training_results - INFO - 
+ Before survival training: 
+number of movements: 12000 | score : 0, life consumed: 1989 
+
+2019-06-24 17:23:25,395 - training_results - INFO - 
+ Before survival training: 
+number of movements: 12000 | score : 0, life consumed: 675 
+
+2019-06-24 17:24:27,230 - training_results - INFO - 
+ Before survival training: 
+number of movements: 12000 | score : 0, life consumed: 593 
+
+2019-06-24 17:25:29,065 - training_results - INFO - 
+ Before survival training: 
+number of movements: 12000 | score : 0, life consumed: 578 
+
+2019-06-24 17:26:32,293 - training_results - INFO - 
+ Before survival training: 
+number of movements: 12000 | score : 0, life consumed: 643 
+

@@ -1,0 +1,51 @@
+2019-06-24 16:38:09,405 - no_interrupt - INFO - 
+ Before survival training: 
+
+2019-06-24 16:38:09,405 - no_interrupt - INFO - 
+ # collecting data during training
+|          | 1  | 2  | 3  | 4  | 5  |
+|----------|---:|---:|---:|---:|---:|
+|Moves     |1200|1200|1200|1200|1200|
+|Lives Left| 274| 204| 228| 291| 281|
+
+2019-06-24 16:38:09,405 - no_interrupt - INFO - 
+ 
+
+2019-06-24 16:40:17,317 - no_interrupt - INFO - 
+ Before survival training: 
+# collecting data during training
+|          |   1   |   2   |   3   |   4   |   5   |
+|----------|------:|------:|------:|------:|------:|
+|Lives Left| 23.000| 34.000| 20.000| 40.000| 22.000|
+|Moves     |120.000|120.000|120.000|120.000|120.000|
+|Ratio     |  0.192|  0.283|  0.167|  0.333|  0.183|
+
+2019-06-24 16:51:35,032 - no_interrupt - INFO - 
+ After survival training: 
+# collecting data during training
+|          |   1   |   2   |   3   |   4   |   5   |
+|----------|------:|------:|------:|------:|------:|
+|Lives Left| 14.000|  3.000|  7.000| 20.000| 16.000|
+|Moves     |121.000|121.000|121.000|121.000|121.000|
+|Ratio     |  0.116|  0.025|  0.058|  0.165|  0.132|
+
+2019-06-24 17:07:16,518 - no_interrupt - INFO - 
+ After survival training: 
+# collecting data during training
+|          |    1    |    2    |    3    |    4    |    5    |
+|----------|--------:|--------:|--------:|--------:|--------:|
+|Lives Left| 2448.000| 2002.000| 2445.000| 2263.000| 2313.000|
+|Moves     |12001.000|12001.000|12001.000|12001.000|12001.000|
+|Ratio     |    0.204|    0.167|    0.204|    0.189|    0.193|
+
+2019-06-24 17:20:40,548 - no_interrupt - INFO - 
+ no_fires status: True
+enemy freq status: 2
+Before survival training: 
+# collecting data during survival training
+|              |    1    |    2    |    3    |    4    |    5    |
+|--------------|--------:|--------:|--------:|--------:|--------:|
+|Lives Consumed| 2372.000| 2770.000| 2627.000| 2250.000| 1989.000|
+|Moves         |12000.000|12000.000|12000.000|12000.000|12000.000|
+|Ratio         |    0.198|    0.231|    0.219|    0.187|    0.166|
+

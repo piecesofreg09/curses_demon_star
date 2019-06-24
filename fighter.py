@@ -15,6 +15,9 @@ class Fire:
         
         # this to_eliminate is used during updating of fires
         self.to_eliminate = False
+        
+        # this bite labels whether the fire has killed any enemies
+        self.targeted = False
     
     def draw_fire(self):
         y, x = self.pos
