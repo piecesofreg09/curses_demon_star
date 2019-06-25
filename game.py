@@ -15,6 +15,7 @@ from generate_input_data_score import ScoreDataUpdaterWriter, ScorePredicter
 color_changable = True
 nf_global_survival_training = False
 enemy_freq_sur_train = 2
+default_win_size = [44, 80]
 
 move_direction_maps = {'U': np.array([-1.0, 0.0]),
     'D': np.array([1.0, 0.0]),
@@ -504,7 +505,103 @@ def draw_menu_after_survival_no_interrupt(stdscr, move_counts):
         return [move_passed, stats['score'], starting_lives - stats['lives']]
 
 def draw_menu_score_data(stdscr):
+    k = 0
+    cursor_x = 40
+    cursor_y = 40
+    ene_total_count = 0
+    ene_appear_count = 0
+    move_passed = 0
+
+    # initialize screen
+    height, width, reso = init_screen(stdscr)
     
+    # initialize game stats
+    starting_lives = 30000
+    lives, lives_old, stats, enemies_obj, fighter_obj = init_game_stats(
+        stdscr, reso, color_changable, cursor_y, cursor_x, starting_lives)
+    
+    # initializer predicter/recommender
+    # the global_survival_training digit is used for the predicter
+    # to select the correct prediction model
+    nf = nf_global_survival_training
+    recommender = SurvivalPredicter(['pics'], nf)
+    
+    score_updater = ScoreDataUpdaterWriter(['pics'])
+    
+    
+    while (k != ord('q')) and (stats['lives'] > 0) and move_passed <= 400000:
+        # Initialization
+        stdscr.clear()
+        
+        fire_or = random.choice([True, True, True, True])
+        
+        
+        # get a prediction of the directions from the trained model
+        move = [recommender.predict_m(reso, fighter_obj, enemies_obj), fire_or]
+        move_passed += 1
+        
+        
+        # update the cursor and the positions of the fighter
+        # using the movement popped out the list
+        cursor_x, cursor_y = cursor_update(move[0], cursor_x, cursor_y, reso)
+        stdscr.move(cursor_y, cursor_x)
+        fighter_obj.move_fighter(cursor_y, cursor_x)
+        
+        
+        
+        # if the movement includes firing or not
+        if move[1]:
+            one_fire = fighter_obj.fire_once([cursor_y - 2, cursor_x])
+            #print(one_fire)
+        
+        
+        # create enemy
+        ene_appear_count += 1
+        if ene_appear_count % enemy_freq_sur_train == 1:
+            ene_total_count += 1
+            ry = np.floor(height / 10)
+            rx = np.random.randint(3, width - 3)
+            pos = [ry, rx]
+            enemies_obj.create_one_enemy(pos)
+        
+        if move[1]:
+            score_updater.update_mother_pre(reso, fighter_obj, 
+            enemies_obj, one_fire)
+        
+        # check collisions and then update the objects
+        collision(enemies_obj, fighter_obj, stats)
+        fighter_obj.update_fires()
+        enemies_obj.update_enemies()
+        enemies_obj.update_topedoes()
+        
+        # Render status bar
+        statusbarstr = "Press 'q' to exit " + \
+            "| {}, {}, {} | score : {}, life left: {}".format(cursor_x, cursor_y,
+                move_passed, stats['score'], stats['lives'])
+        render_status_bar(stdscr, statusbarstr, height, width)
+        
+        
+        # Refresh the screen
+        stdscr.refresh()
+        curses.napms(1)
+
+        # Wait for next input
+        k = stdscr.getch()
+    
+    else:
+        k = stdscr.getch()
+        
+        score_updater.write_mother()
+        
+        logger = logging.getLogger('training_results')
+        ot_str = 'Before score training using models of : ' + \
+            "number of movements: {} | score : {}, life consumed: {} \n".format(
+                move_passed, stats['score'], starting_lives - stats['lives'])
+        logger.info(ot_str)
+        
+        while (k != ord('q') and k != ord('Q')):
+            draw_game_over(stdscr, height)
+            k = stdscr.getch()
     pass
 
 def draw_menu_score_data_no_interrupt(stdscr, move_counts):
@@ -692,7 +789,7 @@ def score_data():
 def score_data_no_interrupt(repeat_times):
     
     move_counts = 12000
-    data = [['Lives Consumed', 'Score', 'Moves', 'Ratio(M/L)', 'Ratio(S/L)']]
+    data = [['Lives Consumed', 'Score', 'Fires', 'Moves', 'Ratio(M/L)', 'Ratio(S/L)', 'Ratio(S/F)']]
     for count in range(repeat_times):
         mp, sc, lil = curses.wrapper(
             draw_menu_score_data_no_interrupt, move_counts)

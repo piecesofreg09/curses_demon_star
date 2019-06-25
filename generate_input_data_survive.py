@@ -291,7 +291,8 @@ class SurvivalPredicter:
         pass
     def predict_basic_pics(self, reso, fighter_obj, enemies_obj):
         
-        
+        # this nf digit chooses which model 
+        # to select from the survival training
         if self.nf == True:
             predicter = joblib.load(os.path.join(os.curdir, 'Models', 'model_svc_survive_nf.joblib'))
         else:

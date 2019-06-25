@@ -7,18 +7,21 @@ class Fire:
     The class of an individual fire
     the constructor has three inputs, stdscr, pos, reso, which applies to Topedo and Enemy too
     '''
-    def __init__(self, stdscr, pos, reso, speed=2.5):
+    def __init__(self, stdscr, pos, reso, color_changable, speed=2.5):
         self.stdscr = stdscr
         self.reso = reso
         self.pos = pos
         self.speed = speed
+        self.color_changable = color_changable
         
         # this to_eliminate is used during updating of fires
         self.to_eliminate = False
         
         # this bite labels whether the fire has killed any enemies
+        # used for updating score training data
         self.targeted = False
     
+    @set_color_decor(6)
     def draw_fire(self):
         y, x = self.pos
         y = math.floor(y)
@@ -66,14 +69,14 @@ class Fighter:
         self.stdscr.addstr(y - 1, x - 2, '=====')
         self.stdscr.addstr(y, x - 2, '=====')
     
-    @set_color_decor(6)
     def fire_once(self, pos):
         height = self.reso[0]
-        one_fire = Fire(self.stdscr, [pos[0] - 1, pos[1]], self.reso)
+        one_fire = Fire(self.stdscr, [pos[0] - 1, pos[1]], self.reso, self.color_changable)
         one_fire.draw_fire()
         self.fires.append(one_fire)
+        return one_fire
     
-    @set_color_decor(6)
+    
     def update_fires(self):
         for i, fire in enumerate(self.fires):
             fire.update_pos_one_step()

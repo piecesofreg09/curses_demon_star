@@ -19,11 +19,12 @@ handler.setFormatter(formatter)
 
 logger.addHandler(handler)
 
-class DataPack:
+class ScoreDataPack:
     def __init__(self, type_s):
         self.type_s = type_s
         self.data = []
         self.target = []
+        self.fire_target = []
 
 class ScoreDataUpdaterWriter:
     '''
@@ -42,7 +43,9 @@ class ScoreDataUpdaterWriter:
         '''
         Initiate the data updater and writer with the three options:
         'basic', 'short', 'pics'
-        currently only 'pics' mode is implemented
+        
+        Warning:
+        **** currently only 'pics' mode is implemented ****
         '''
         self.update_funcs_pre = {'basic': self.update_1_pre,
             'short': self.update_2_pre, 
@@ -58,16 +61,16 @@ class ScoreDataUpdaterWriter:
         for type_s in self.types:
             if type_s in options:
                 self.type_dict[type_s] = True
-                self.data[type_s] = DataPack(type_s)
+                self.data[type_s] = ScoreDataPack(type_s)
                 logger.info('%s will be written in the datasets', type_s)
         pass
 
-    def update_mother_pre(self, reso, fighter_obj, enemies_obj, move):
+    def update_mother_pre(self, reso, fighter_obj, enemies_obj, one_fire):
         self.update_d_pre += 1
         for type_s in self.types:
             if self.type_dict[type_s] == True:
                 self.update_funcs_pre[type_s](reso,
-                    fighter_obj, enemies_obj, move)
+                    fighter_obj, enemies_obj, one_fire)
         if self.update_d_pre % 2000 == 0:
             logger.info('%d pre records updated', self.update_d_pre)
 
@@ -89,7 +92,7 @@ class ScoreDataUpdaterWriter:
         logger.info('Writing data into files')
     
     @classmethod
-    def update_1_pre(self, reso, fighter_obj, enemies_obj, move):
+    def update_1_pre(self, reso, fighter_obj, enemies_obj, one_fire):
         pass
         
     @classmethod
@@ -101,7 +104,7 @@ class ScoreDataUpdaterWriter:
         pass
     
     @classmethod
-    def update_2_pre(self, reso, fighter_obj, enemies_obj, move):
+    def update_2_pre(self, reso, fighter_obj, enemies_obj, one_fire):
         pass
     
     @classmethod
@@ -113,77 +116,56 @@ class ScoreDataUpdaterWriter:
         pass
 
     @classmethod
-    def update_3_pre(self, reso, fighter_obj, enemies_obj, move):
+    def update_3_pre(self, reso, fighter_obj, enemies_obj, one_fire):
         
         type_s = 'pics'
         
         
         height, width = reso
-        topedoes = enemies_obj.topedoes
         enemies = enemies_obj.enemies
         fighter = fighter_obj
         
-        temp_topedoes = [0 for i in range(width)]
-        temp_enemies = [0 for i in range(width)]
+        # the number of enemies in one column is maximized to be 3
+        enemy_max_per_col = 2
+        temp_enemies = [[[None for i in range(enemy_max_per_col)], 0] for i in range(width)]
         
         fighter_y, fighter_x = fighter.pos
-        
-        for i, topedo in enumerate(topedoes):
-            posy, posx = topedo.pos
-            posy = math.floor(posy)
-            posx = math.floor(posx)
-            
-            if posy <= fighter_y:
-                temp_topedoes[posx] = max(temp_topedoes[posx], posy)
-        
-        temp_topedoes = [min((fighter_y - i), window_height) for i in temp_topedoes]
         
         for i, enemy in enumerate(enemies):
             posy, posx = enemy.pos
             posy = math.floor(posy)
             posx = math.floor(posx)
-            if posy <= fighter_y:
-                temp_enemies[posx] = max(temp_enemies[posx], posy)
+            if posy <= fighter_y and temp_enemies[posx][1] < enemy_max_per_col:
+                idx = temp_enemies[posx][1]
+                temp_enemies[posx][0][idx] = fighter_y - posy
+                temp_enemies[posx][1] += 1
         
-        temp_enemies = [min((fighter_y - i), window_height) for i in temp_enemies]
+        temp_enemies = [i[0] for i in temp_enemies]
         
-        move_two_digits = move_map[move[0]]
+        temp_enemies = pd.DataFrame(temp_enemies)
+        temp_enemies.fillna(200, inplace=True)
+        temp = temp_enemies.values.flatten()
+        temp = temp.tolist()
+        #print(temp)
         
-        
-        
-        wing_length = 5
-        left_bound = max(fighter_x - wing_length, 0)
-        right_bound = min(fighter_x + wing_length, width)
-        
-        left_wing = fighter_x - left_bound
-        right_wing = right_bound - fighter_x
-        
-        temp_1 = [0 for i in range(2 * wing_length + 1)]
-        temp_1[(wing_length - left_wing): (wing_length + 1)] = temp_topedoes[(fighter_x - left_wing):(fighter_x + 1)]
-        temp_1[(wing_length + 1):(wing_length + right_wing)] = temp_topedoes[(fighter_x + 1):(fighter_x + right_wing)]
-        
-        temp_2 = [0 for i in range(2 * wing_length + 1)]
-        temp_2[(wing_length - left_wing): (wing_length + 1)] = temp_enemies[(fighter_x - left_wing):(fighter_x + 1)]
-        temp_2[(wing_length + 1):(wing_length + right_wing)] = temp_enemies[(fighter_x + 1):(fighter_x + right_wing)]
-        
-        temp = temp_1 + temp_2
-        
-        
-        self.data[type_s].data.append(temp + move_two_digits)
-        
+        self.data[type_s].data.append(temp + fighter.pos)
+        self.data[type_s].fire_target.append(one_fire)
     
     @classmethod
     def update_3_post(self, lives, lives_old):
-        type_s = 'pics'
-        if lives_old > lives:
-            self.data[type_s].target.append(0)
-        else:
-            self.data[type_s].target.append(1)
+        pass
     
     @classmethod
     def write_3(self):
+        
         type_s = 'pics'
-        data_dir = os.path.join(os.curdir, 'Data', 'Score', 'basic_data_pics.pkl')
+        
+        #print(self.data[type_s].fire_target)
+        
+        self.data[type_s].target = [1 if i.targeted == True else 0 for i in self.data[type_s].fire_target]
+        
+        
+        data_dir = os.path.join(os.curdir, 'Data', 'Score', 'data_pics.pkl')
         with open(data_dir, 'wb') as out_file:
             ot = {'data': pd.DataFrame(self.data[type_s].data), 'target': pd.DataFrame(self.data[type_s].target)}
             pickle.dump(ot, out_file)

@@ -31,6 +31,7 @@ def single_ene_fire(ene, fire):
         if (fire_x - ene_x) >= (-2 - 1e-2) and (fire_x - ene_x) <= (2 + 1e-2):
             ene.to_eliminate = True
             fire.to_eliminate = True
+            fire.targeted = True
             return True
 
     return False
