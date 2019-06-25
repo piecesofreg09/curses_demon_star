@@ -42,15 +42,16 @@ class ScoreDataUpdaterWriter:
         '''
         Initiate the data updater and writer with the three options:
         'basic', 'short', 'pics'
+        currently only 'pics' mode is implemented
         '''
-        self.update_funcs_pre = {'basic': self.update_basic_pre,
-            'short': self.update_basic_short_pre, 
-            'pics': self.update_basic_pics_pre}
-        self.update_funcs_post = {'basic': self.update_basic_post,
-            'short': self.update_basic_short_post, 
-            'pics': self.update_basic_pics_post}
-        self.write_funcs = {'basic': self.write_basic,
-            'short': self.write_basic_short, 'pics': self.write_basic_pics}
+        self.update_funcs_pre = {'basic': self.update_1_pre,
+            'short': self.update_2_pre, 
+            'pics': self.update_3_pre}
+        self.update_funcs_post = {'basic': self.update_1_post,
+            'short': self.update_2_post, 
+            'pics': self.update_3_post}
+        self.write_funcs = {'basic': self.write_1,
+            'short': self.write_2, 'pics': self.write_3}
         self.update_d_pre = 0
         self.update_d_post = 0
         
@@ -58,7 +59,7 @@ class ScoreDataUpdaterWriter:
             if type_s in options:
                 self.type_dict[type_s] = True
                 self.data[type_s] = DataPack(type_s)
-                logger.info('%s will be written in the file', type_s)
+                logger.info('%s will be written in the datasets', type_s)
         pass
 
     def update_mother_pre(self, reso, fighter_obj, enemies_obj, move):
@@ -67,7 +68,7 @@ class ScoreDataUpdaterWriter:
             if self.type_dict[type_s] == True:
                 self.update_funcs_pre[type_s](reso,
                     fighter_obj, enemies_obj, move)
-        if self.update_d_pre % 20 == 0:
+        if self.update_d_pre % 2000 == 0:
             logger.info('%d pre records updated', self.update_d_pre)
 
     def update_mother_post(self, lives, lives_old):
@@ -76,7 +77,7 @@ class ScoreDataUpdaterWriter:
             if self.type_dict[type_s] == True:
                 self.update_funcs_post[type_s](lives, lives_old)
         
-        if self.update_d_post % 20 == 0:
+        if self.update_d_post % 2000 == 0:
             logger.info('%d post records updated', self.update_d_post)
         
     
@@ -88,136 +89,34 @@ class ScoreDataUpdaterWriter:
         logger.info('Writing data into files')
     
     @classmethod
-    def update_basic_pre(self, reso, fighter_obj, enemies_obj, move):
-        type_s = 'basic'
-        height, width = reso
-        topedoes = enemies_obj.topedoes
-        enemies = enemies_obj.enemies
-        fighter = fighter_obj
-        
-        temp_topedoes = [0 for i in range(width)]
-        temp_enemies = [0 for i in range(width)]
-        
-        for i, topedo in enumerate(topedoes):
-            posy, posx = topedo.pos
-            posy = math.floor(posy)
-            posx = math.floor(posx)
-            temp_topedoes[posx] = max(temp_topedoes[posx], posy)
-            
-        for i, enemy in enumerate(enemies):
-            posy, posx = enemy.pos
-            posy = math.floor(posy)
-            posx = math.floor(posx)
-            temp_enemies[posx] = max(temp_enemies[posx], posy)
-        
-        fighter_y, fighter_x = fighter.pos
-        move_two_digits = move_map[move[0]]
-        
-        self.data[type_s].data.append(temp_topedoes + temp_enemies + [fighter_x, fighter_y] + move_two_digits)
+    def update_1_pre(self, reso, fighter_obj, enemies_obj, move):
+        pass
         
     @classmethod
-    def update_basic_post(self, lives, lives_old):
-        type_s = 'basic'
-        if lives_old > lives:
-            self.data[type_s].target.append(0)
-        else:
-            self.data[type_s].target.append(1)
-    
-    @classmethod
-    def write_basic(self):
-        type_s = 'basic'
-        data_dir = os.path.join(os.curdir, 'Data', 'basic_data.pkl')
-        with open(data_dir, 'wb') as out_file:
-            ot = {'data': pd.DataFrame(self.data[type_s].data), 'target': pd.DataFrame(self.data[type_s].target)}
-            pickle.dump(ot, out_file)
-        
+    def update_1_post(self, lives, lives_old):
         pass
     
+    @classmethod
+    def write_1(self):
+        pass
     
     @classmethod
-    def update_basic_short_pre(self, reso, fighter_obj, enemies_obj, move):
-        
-        type_s = 'short'
-        
-        height, width = reso
-        topedoes = enemies_obj.topedoes
-        enemies = enemies_obj.enemies
-        fighter = fighter_obj
-        
-        temp_topedoes = [0 for i in range(width)]
-        temp_enemies = [0 for i in range(width)]
-        
-        fighter_y, fighter_x = fighter.pos
-        
-        for i, topedo in enumerate(topedoes):
-            posy, posx = topedo.pos
-            posy = math.floor(posy)
-            posx = math.floor(posx)
-            
-            if posy <= fighter_y:
-                temp_topedoes[posx] = max(temp_topedoes[posx], posy)
-        
-        temp_topedoes = [i - fighter_y for i in temp_topedoes]
-        
-        for i, enemy in enumerate(enemies):
-            posy, posx = enemy.pos
-            posy = math.floor(posy)
-            posx = math.floor(posx)
-            if posy <= fighter_y:
-                temp_enemies[posx] = max(temp_enemies[posx], posy)
-        
-        temp_enemies = [i - fighter_y for i in temp_enemies]
-        
-        move_two_digits = move_map[move[0]]
-        
-        wing_length = 4
-        left_bound = max(fighter_x - wing_length, 0)
-        right_bound = min(fighter_x + wing_length, width)
-        
-        left_wing = fighter_x - left_bound
-        right_wing = right_bound - fighter_x
-        
-        temp_1 = [0 for i in range(2 * wing_length + 1)]
-        temp_1[(wing_length - left_wing): (wing_length + 1)] = temp_topedoes[(fighter_x - left_wing):(fighter_x + 1)]
-        temp_1[(wing_length + 1):(wing_length + right_wing)] = temp_topedoes[(fighter_x + 1):(fighter_x + right_wing)]
-        
-        temp_2 = [0 for i in range(2 * wing_length + 1)]
-        temp_2[(wing_length - left_wing): (wing_length + 1)] = temp_enemies[(fighter_x - left_wing):(fighter_x + 1)]
-        temp_2[(wing_length + 1):(wing_length + right_wing)] = temp_enemies[(fighter_x + 1):(fighter_x + right_wing)]
-        
-        temp = temp_1 + temp_2
-        
-        self.data[type_s].data.append(temp + move_two_digits)
-        
+    def update_2_pre(self, reso, fighter_obj, enemies_obj, move):
+        pass
     
     @classmethod
-    def update_basic_short_post(self, lives, lives_old):
-        type_s = 'short'
-        if lives_old > lives:
-            self.data[type_s].target.append(0)
-        else:
-            self.data[type_s].target.append(1)
+    def update_2_post(self, lives, lives_old):
+        pass
     
     @classmethod
-    def write_basic_short(self):
-        type_s = 'short'
-        data_dir = os.path.join(os.curdir, 'Data', 'basic_data_short.pkl')
-        with open(data_dir, 'wb') as out_file:
-            ot = {'data': pd.DataFrame(self.data[type_s].data), 'target': pd.DataFrame(self.data[type_s].target)}
-            pickle.dump(ot, out_file)
-        
+    def write_2(self):
         pass
 
     @classmethod
-    def update_basic_pics_pre(self, reso, fighter_obj, enemies_obj, move):
+    def update_3_pre(self, reso, fighter_obj, enemies_obj, move):
         
         type_s = 'pics'
         
-        # window size is the window to look above
-        # height should be small than 10
-        
-        window_size = [10, 14]
-        window_height, window_width = window_size
         
         height, width = reso
         topedoes = enemies_obj.topedoes
@@ -274,7 +173,7 @@ class ScoreDataUpdaterWriter:
         
     
     @classmethod
-    def update_basic_pics_post(self, lives, lives_old):
+    def update_3_post(self, lives, lives_old):
         type_s = 'pics'
         if lives_old > lives:
             self.data[type_s].target.append(0)
@@ -282,9 +181,9 @@ class ScoreDataUpdaterWriter:
             self.data[type_s].target.append(1)
     
     @classmethod
-    def write_basic_pics(self):
+    def write_3(self):
         type_s = 'pics'
-        data_dir = os.path.join(os.curdir, 'Data', 'basic_data_pics.pkl')
+        data_dir = os.path.join(os.curdir, 'Data', 'Score', 'basic_data_pics.pkl')
         with open(data_dir, 'wb') as out_file:
             ot = {'data': pd.DataFrame(self.data[type_s].data), 'target': pd.DataFrame(self.data[type_s].target)}
             pickle.dump(ot, out_file)

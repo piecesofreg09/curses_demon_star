@@ -13,8 +13,8 @@ from generate_input_data_score import ScoreDataUpdaterWriter, ScorePredicter
 
 
 color_changable = True
-nf_global_survival_training = True
-enemy_freq_sur_train = 8
+nf_global_survival_training = False
+enemy_freq_sur_train = 2
 
 move_direction_maps = {'U': np.array([-1.0, 0.0]),
     'D': np.array([1.0, 0.0]),

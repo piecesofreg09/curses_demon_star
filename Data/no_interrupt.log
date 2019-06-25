@@ -49,3 +49,69 @@ Before survival training:
 |Moves         |12000.000|12000.000|12000.000|12000.000|12000.000|
 |Ratio         |    0.198|    0.231|    0.219|    0.187|    0.166|
 
+2019-06-24 17:27:33,530 - no_interrupt - INFO - 
+ no_fires status: True
+enemy freq status: 8
+Before survival training: 
+# collecting data during survival training
+|              |    1    |    2    |    3    |    4    |    5    |
+|--------------|--------:|--------:|--------:|--------:|--------:|
+|Lives Consumed|  675.000|  593.000|  578.000|  643.000|  653.000|
+|Moves         |12000.000|12000.000|12000.000|12000.000|12000.000|
+|Ratio         |    0.056|    0.049|    0.048|    0.054|    0.054|
+
+2019-06-24 17:38:04,998 - no_interrupt - INFO - 
+ no_fires status: True
+enemy freq status: 8
+After survival training: 
+# collecting data after survival training
+|              |    1    |    2    |    3    |    4    |    5    |
+|--------------|--------:|--------:|--------:|--------:|--------:|
+|Lives Consumed|  509.000|  464.000|  449.000|  467.000|  433.000|
+|Moves         |12001.000|12001.000|12001.000|12001.000|12001.000|
+|Ratio         |    0.042|    0.039|    0.037|    0.039|    0.036|
+
+2019-06-25 10:44:05,950 - no_interrupt - INFO - 
+ no_fires status: False
+enemy freq status: 8
+Before survival training: 
+# collecting data during survival training
+|              |    1    |    2    |    3    |    4    |    5    |
+|--------------|--------:|--------:|--------:|--------:|--------:|
+|Lives Consumed|  271.000|  259.000|  271.000|  247.000|  287.000|
+|Moves         |12000.000|12000.000|12000.000|12000.000|12000.000|
+|Ratio         |    0.023|    0.022|    0.023|    0.021|    0.024|
+
+2019-06-25 11:09:24,738 - no_interrupt - INFO - 
+ no_fires status: False
+enemy freq status: 8
+After survival training: 
+# collecting data after survival training
+|              |    1    |    2    |    3    |    4    |    5    |
+|--------------|--------:|--------:|--------:|--------:|--------:|
+|Lives Consumed|  150.000|  151.000|   91.000|  114.000|  144.000|
+|Moves         |12001.000|12001.000|12001.000|12001.000|12001.000|
+|Ratio         |    0.012|    0.013|    0.008|    0.009|    0.012|
+
+2019-06-25 11:22:33,424 - no_interrupt - INFO - 
+ no_fires status: False
+enemy freq status: 2
+After survival training: 
+# collecting data after survival training
+|              |    1    |    2    |    3    |    4    |    5    |
+|--------------|--------:|--------:|--------:|--------:|--------:|
+|Lives Consumed|  758.000|  703.000|  677.000|  608.000|  619.000|
+|Moves         |12001.000|12001.000|12001.000|12001.000|12001.000|
+|Ratio         |    0.063|    0.059|    0.056|    0.051|    0.052|
+
+2019-06-25 11:32:51,387 - no_interrupt - INFO - 
+ no_fires status: False
+enemy freq status: 2
+Before survival training: 
+# collecting data during survival training
+|              |    1    |    2    |    3    |   4    |    5    |
+|--------------|--------:|--------:|--------:|-------:|--------:|
+|Lives Consumed|  975.000| 1123.000| 1090.000|  996.00| 1070.000|
+|Moves         |12000.000|12000.000|12000.000|12000.00|12000.000|
+|Ratio         |    0.081|    0.094|    0.091|    0.08|    0.089|
+
