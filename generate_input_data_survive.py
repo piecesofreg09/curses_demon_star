@@ -23,6 +23,10 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 
 class DataPack:
+    '''
+    This is for each dataset generation. Different training mechanisms shares
+    the same components.
+    '''
     def __init__(self, type_s):
         self.type_s = type_s
         self.data = []
@@ -245,6 +249,9 @@ class SurvivalDataUpdaterWriter:
 
 
 class SurvivalPredicter:
+    '''
+    Prediction for 'basic' and 'short' is not implemented.
+    '''
     types = ['basic', 'short', 'pics']
     type_dict = {type_s:False for type_s in types}
     

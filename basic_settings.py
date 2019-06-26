@@ -33,8 +33,8 @@ def set_color_pair_with_gate(stdscr, num, color_changable, on_off):
             stdscr.attroff(curses.color_pair(num))
 
 def set_color_decor(num):
-    # decorator for the changing of colors, wrapped around functions
-    # that needs color changing
+    # decorator for the setting of colors, wrapped around functions
+    # that needs color setting
     def set_color(func):
         def wrapper(*args, **kwargs):
             

@@ -178,5 +178,79 @@ class ScoreDataUpdaterWriter:
         
         
 class ScorePredicter:
+    types = ['basic', 'short', 'pics']
+    type_dict = {type_s:False for type_s in types}
+    
+    def __init__(self, options, using_st=True):
+        self.predicter_funcs = {'basic': self.predict_1,
+            'short': self.predict_2, 
+            'pics': self.predict_3}
+        # this sets which predicter to use
+        self.using_st = using_st
+        
+        for type_s in self.types:
+            if type_s in options:
+                self.type_dict[type_s] = True
+                logger.info('%s will be used to create predictions', type_s)
+        pass
+    
+    def predict_m(self, reso, fighter_obj, enemies_obj):
+        
+        res = []
+        for type_s in self.types:
+            if self.type_dict[type_s] == True:
+                temp = self.predicter_funcs[type_s](reso, fighter_obj, enemies_obj)
+                res.extend(temp)
+        
+        #print(res)
+        # the following step is trying to find out the most frequent elements, if
+        # the frequencies are the same for some directions, a random
+        # direction is then returned
+        counting_res = Counter(res)
+        most_freq = counting_res.most_common(1)[0][1]
+        pot = []
+        
+        for dir, count in dict(counting_res).items():
+            if count == most_freq:
+                pot.append(dir)
+        
+        # the prediction is based on no fires fired from the fighter
+        return random.choice(pot)
+        
+    def predict_1(self, reso, fighter_obj, enemies_obj):
+        return None
+        pass
+    def predict_2(self, reso, fighter_obj, enemies_obj):
+        return None
+        pass
+    def predict_3(self, reso, fighter_obj, enemies_obj):
+        
+        # this using_st digit chooses which model 
+        # if it is True, then use the data generated using survival training
+        # if it is False, then use randomly generated movements and fires
+        if self.using_st == True:
+            predicter = joblib.load(os.path.join(os.curdir, 'Models', ''))
+        else:
+            predicter = joblib.load(os.path.join(os.curdir, 'Models', ''))
+        
+        
+        # potent is the potential list of possible movements
+        potent = []
+        
+        temp = enemy_figher_pics(reso, fighter_obj, enemies_obj)
+        
+        for dir in list(move_map.keys()):
+            move_two_digits = move_map[dir]
+            input_data = temp + move_two_digits
+            suggestion = predicter.predict([input_data])
+            if suggestion[0] == 1:
+                potent.append(dir)
+        if potent:
+            return potent
+        else:
+            return random.choice(['D', 'U', 'L', 'R', 'N'])
+        pass
     pass
+
+def enemy_fighter_pics():
     

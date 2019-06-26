@@ -15,6 +15,12 @@ from generate_input_data_score import ScoreDataUpdaterWriter, ScorePredicter
 color_changable = True
 nf_global_survival_training = False
 enemy_freq_sur_train = 2
+
+# this bit sets on the score training or prediction of using #trained predicter from survival training or not
+# if yon_sctraining_using_svt is set as True, during score training
+# we will use the predicter generated from survival training
+# if yon_sctraining_using_svt is set False, random movements will be used
+yon_sctraining_using_svt = True
 default_win_size = [44, 80]
 
 move_direction_maps = {'U': np.array([-1.0, 0.0]),
@@ -535,7 +541,10 @@ def draw_menu_score_data(stdscr):
         
         fire_or = random.choice([True, True, True, True])
         
-        
+        if yon_sctraining_using_svt:
+            move_dir = recommender.predict_m(reso, fighter_obj, enemies_obj)
+        else:
+            move_dir = random.choice(['D', 'U', 'L', 'R', 'N'])
         # get a prediction of the directions from the trained model
         move = [recommender.predict_m(reso, fighter_obj, enemies_obj), fire_or]
         move_passed += 1

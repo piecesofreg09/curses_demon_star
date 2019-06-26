@@ -1,6 +1,15 @@
 import numpy as np
 import math
 
+'''Tested on python 3.6
+
+This package checks the collision between different objects.
+
+collision(): wrapper
+check_ene_fire_group(): check the collisions between enemies and fires
+check_ene_fighter_group(): check the collisions between enemies and fighters
+check_topedo_fighter_group(): check the collisions between topedoes and fighter
+'''
 
 def collision(enemies_obj, fighter_obj, stats):
     check_ene_fire_group(enemies_obj, fighter_obj, stats)

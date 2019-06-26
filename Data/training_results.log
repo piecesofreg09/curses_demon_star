@@ -297,3 +297,6 @@ number of movements: 12000 | score : 624, life consumed: 1070
 2019-06-25 15:15:17,447 - training_results - INFO - 
  Before score training using models of : number of movements: 40001 | score : 2708, life consumed: 1234 
 
+2019-06-25 17:06:22,868 - training_results - INFO - 
+ Before score training using models of : number of movements: 400001 | score : 27533, life consumed: 12538 
+
