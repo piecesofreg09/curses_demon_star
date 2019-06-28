@@ -13,14 +13,16 @@ from generate_input_data_score import ScoreDataUpdaterWriter, ScorePredicter
 
 
 color_changable = True
+# nf_global_survival_training means the fighter is firing or not
+# nf = True means no fires
 nf_global_survival_training = False
-enemy_freq_sur_train = 2
+enemy_freq_sur_train = 8
 
 # this bit sets on the score training or prediction of using #trained predicter from survival training or not
 # if yon_sctraining_using_svt is set as True, during score training
 # we will use the predicter generated from survival training
 # if yon_sctraining_using_svt is set False, random movements will be used
-yon_sctraining_using_svt = True
+yon_sctraining_using_svt = False
 default_win_size = [44, 80]
 
 move_direction_maps = {'U': np.array([-1.0, 0.0]),
@@ -532,21 +534,21 @@ def draw_menu_score_data(stdscr):
     nf = nf_global_survival_training
     recommender = SurvivalPredicter(['pics'], nf)
     
-    score_updater = ScoreDataUpdaterWriter(['pics'])
+    score_updater = ScoreDataUpdaterWriter(['basic'])
     
     
-    while (k != ord('q')) and (stats['lives'] > 0) and move_passed <= 400000:
+    while (k != ord('q')) and (stats['lives'] > 0) and move_passed <= 800000:
         # Initialization
         stdscr.clear()
         
-        fire_or = random.choice([True, True, True, True])
+        fire_or = random.choice([True, True, True, False])
         
         if yon_sctraining_using_svt:
             move_dir = recommender.predict_m(reso, fighter_obj, enemies_obj)
         else:
             move_dir = random.choice(['D', 'U', 'L', 'R', 'N'])
         # get a prediction of the directions from the trained model
-        move = [recommender.predict_m(reso, fighter_obj, enemies_obj), fire_or]
+        move = [move_dir, fire_or]
         move_passed += 1
         
         
@@ -555,13 +557,6 @@ def draw_menu_score_data(stdscr):
         cursor_x, cursor_y = cursor_update(move[0], cursor_x, cursor_y, reso)
         stdscr.move(cursor_y, cursor_x)
         fighter_obj.move_fighter(cursor_y, cursor_x)
-        
-        
-        
-        # if the movement includes firing or not
-        if move[1]:
-            one_fire = fighter_obj.fire_once([cursor_y - 2, cursor_x])
-            #print(one_fire)
         
         
         # create enemy
@@ -573,9 +568,18 @@ def draw_menu_score_data(stdscr):
             pos = [ry, rx]
             enemies_obj.create_one_enemy(pos)
         
+        # if the movement includes firing or not
         if move[1]:
             score_updater.update_mother_pre(reso, fighter_obj, 
-            enemies_obj, one_fire)
+            enemies_obj)
+            one_fire = fighter_obj.fire_once([cursor_y - 2, cursor_x])
+            #print(one_fire)
+        
+        
+        
+        
+        if move[1]:
+            score_updater.update_mother_post(one_fire)
         
         # check collisions and then update the objects
         collision(enemies_obj, fighter_obj, stats)
@@ -603,9 +607,11 @@ def draw_menu_score_data(stdscr):
         score_updater.write_mother()
         
         logger = logging.getLogger('training_results')
-        ot_str = 'Before score training using models of : ' + \
+        if_using_srv_training = ('Using survival training predicter, ' if
+            yon_sctraining_using_svt else 'Using random steps, ')
+        ot_str = ('Before score training, ' + if_using_srv_training + 
             "number of movements: {} | score : {}, life consumed: {} \n".format(
-                move_passed, stats['score'], starting_lives - stats['lives'])
+                move_passed, stats['score'], starting_lives - stats['lives']))
         logger.info(ot_str)
         
         while (k != ord('q') and k != ord('Q')):
@@ -887,6 +893,40 @@ if __name__ == "__main__":
     4. after score training game: sc_g
     '''
     
+    modes = ['sv_t', 'sv_g', 'sc_t', 'sc_g']
+    funcs_name = ['interrupt', 'no_interrupt']
+    funcs_interrupt = [survival_data, 
+        game_after_survival_training, 
+        score_data,
+        game_after_score_training]
+    funcs_no_interrupt = [survival_data_no_interrupt,
+        game_after_survival_training_no_interrupt,
+        score_data_no_interrupt,
+        game_after_score_training_no_interrupt]
+    
+    funcs_int_dict = dict(zip(modes, funcs_interrupt))
+    funcs_no_int_dict = dict(zip(modes, funcs_no_interrupt))
+    funcs_grouped = dict(zip(funcs_name, [funcs_int_dict, funcs_no_int_dict]))
+    
+    
+    if len(sys.argv) == 1:
+        game()
+    else:
+        if sys.argv[1] == 'simple' or sys.argv[1] == 'g':
+            game()
+        elif sys.argv[1] in modes:
+            if len(sys.argv) == 2:
+                funcs_grouped['interrupt'][sys.argv[1]]()
+            elif len(sys.argv) == 3:
+                try:
+                    repeat_times = int(sys.argv[2])
+                except:
+                    print('the repeat_times parameter is malformated' 
+                        + ' a default value of 3 will be used')
+                    repeat_times = 3
+                funcs_grouped['no_interrupt'][sys.argv[1]](repeat_times)
+                
+    '''
     if len(sys.argv) == 1:
         game()
     else:
@@ -939,7 +979,7 @@ if __name__ == "__main__":
             
         elif sys.argv[1] == 'simple' or sys.argv[1] == 'g':
             game()
-    
+    '''
     
     
     

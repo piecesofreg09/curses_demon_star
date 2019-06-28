@@ -65,22 +65,22 @@ class ScoreDataUpdaterWriter:
                 logger.info('%s will be written in the datasets', type_s)
         pass
 
-    def update_mother_pre(self, reso, fighter_obj, enemies_obj, one_fire):
+    def update_mother_pre(self, reso, fighter_obj, enemies_obj):
         self.update_d_pre += 1
         for type_s in self.types:
             if self.type_dict[type_s] == True:
                 self.update_funcs_pre[type_s](reso,
-                    fighter_obj, enemies_obj, one_fire)
-        if self.update_d_pre % 2000 == 0:
+                    fighter_obj, enemies_obj)
+        if self.update_d_pre % 5000 == 0:
             logger.info('%d pre records updated', self.update_d_pre)
 
-    def update_mother_post(self, lives, lives_old):
+    def update_mother_post(self, one_fire):
         self.update_d_post += 1
         for type_s in self.types:
             if self.type_dict[type_s] == True:
-                self.update_funcs_post[type_s](lives, lives_old)
+                self.update_funcs_post[type_s](one_fire)
         
-        if self.update_d_post % 2000 == 0:
+        if self.update_d_post % 5000 == 0:
             logger.info('%d post records updated', self.update_d_post)
         
     
@@ -89,26 +89,74 @@ class ScoreDataUpdaterWriter:
             if self.type_dict[type_s] == True:
                 self.write_funcs[type_s]()
         
-        logger.info('Writing data into files')
+        logger.info('%d pre - %d post - data writing into files', 
+            self.update_d_pre, self.update_d_post)
     
     @classmethod
-    def update_1_pre(self, reso, fighter_obj, enemies_obj, one_fire):
+    def update_1_pre(self, reso, fighter_obj, enemies_obj):
+        type_s = 'basic'
+        
+        height, width = reso
+        enemies = enemies_obj.enemies
+        fighter = fighter_obj
+        fires = fighter_obj.fires
+        
+        wing_size = 2
+        ene_fire = [[0 for i in range(height)] for i in range(2 * wing_size + 1)]
+        
+        fighter_y, fighter_x = fighter.pos
+        
+        for i, enemy in enumerate(enemies):
+            posy, posx = enemy.pos
+            posy = math.floor(posy)
+            posx = math.floor(posx)
+            if np.abs(posx - fighter_x) <= wing_size:
+                ene_fire[posx - fighter_x + wing_size][posy] = 1
+        
+        for i, fire in enumerate(fires):
+            posy, posx = fire.pos
+            posy = math.floor(posy)
+            posx = math.floor(posx)
+            if np.abs(posx - fighter_x) <= wing_size:
+                ene_fire[posx - fighter_x + wing_size][posy] = 2
+        
+        temp_ene_fire = pd.DataFrame(ene_fire)
+        
+        temp_ene_fire = temp_ene_fire.values.flatten().tolist()
+        #print(temp_ene_fire)
+        
+        self.data[type_s].data.append(temp_ene_fire + [fighter_y])
+        
+        
         pass
         
     @classmethod
-    def update_1_post(self, lives, lives_old):
+    def update_1_post(self, one_fire):
+        type_s = 'basic'
+        self.data[type_s].fire_target.append(one_fire)
         pass
     
     @classmethod
     def write_1(self):
+        type_s = 'basic'
+        
+        #print(self.data[type_s].fire_target)
+        
+        self.data[type_s].target = [1 if i.targeted == True else 0 for i in self.data[type_s].fire_target]
+        
+        data_dir = os.path.join(os.curdir, 'Data', 'Score', 'data_basic.pkl')
+        with open(data_dir, 'wb') as out_file:
+            ot = {'data': pd.DataFrame(self.data[type_s].data), 'target': pd.DataFrame(self.data[type_s].target)}
+            pickle.dump(ot, out_file)
+        
         pass
     
     @classmethod
-    def update_2_pre(self, reso, fighter_obj, enemies_obj, one_fire):
+    def update_2_pre(self, reso, fighter_obj, enemies_obj):
         pass
     
     @classmethod
-    def update_2_post(self, lives, lives_old):
+    def update_2_post(self, one_fire):
         pass
     
     @classmethod
@@ -116,7 +164,7 @@ class ScoreDataUpdaterWriter:
         pass
 
     @classmethod
-    def update_3_pre(self, reso, fighter_obj, enemies_obj, one_fire):
+    def update_3_pre(self, reso, fighter_obj, enemies_obj):
         
         type_s = 'pics'
         
@@ -152,7 +200,9 @@ class ScoreDataUpdaterWriter:
         self.data[type_s].fire_target.append(one_fire)
     
     @classmethod
-    def update_3_post(self, lives, lives_old):
+    def update_3_post(self, one_fire):
+        type_s = 'pics'
+        self.data[type_s].fire_target.append(one_fire)
         pass
     
     @classmethod
@@ -252,5 +302,5 @@ class ScorePredicter:
         pass
     pass
 
-def enemy_fighter_pics():
-    
+def enemy_fighter_pics_x():
+    pass

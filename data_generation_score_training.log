@@ -730,3 +730,581 @@
  400000 pre records updated
 2019-06-25 17:06:22,867 - generate_input_data_score - INFO - 
  Writing data into files
+2019-06-27 12:23:16,728 - generate_input_data_score - INFO - 
+ basic will be written in the datasets
+2019-06-27 12:23:28,376 - generate_input_data_score - INFO - 
+ Writing data into files
+2019-06-27 12:28:39,208 - generate_input_data_score - INFO - 
+ basic will be written in the datasets
+2019-06-27 12:29:14,927 - generate_input_data_score - INFO - 
+ 2000 pre records updated
+2019-06-27 12:29:50,895 - generate_input_data_score - INFO - 
+ 4000 pre records updated
+2019-06-27 12:30:26,865 - generate_input_data_score - INFO - 
+ 6000 pre records updated
+2019-06-27 12:31:04,113 - generate_input_data_score - INFO - 
+ 8000 pre records updated
+2019-06-27 12:31:41,167 - generate_input_data_score - INFO - 
+ 10000 pre records updated
+2019-06-27 12:31:41,645 - generate_input_data_score - INFO - 
+ 10001 pre - 0 post - data writing into files
+2019-06-27 12:35:06,128 - generate_input_data_score - INFO - 
+ basic will be written in the datasets
+2019-06-27 12:35:52,044 - generate_input_data_score - INFO - 
+ 2000 pre records updated
+2019-06-27 12:36:38,162 - generate_input_data_score - INFO - 
+ 4000 pre records updated
+2019-06-27 12:37:25,090 - generate_input_data_score - INFO - 
+ 6000 pre records updated
+2019-06-27 12:38:12,559 - generate_input_data_score - INFO - 
+ 8000 pre records updated
+2019-06-27 12:38:59,698 - generate_input_data_score - INFO - 
+ 10000 pre records updated
+2019-06-27 12:39:42,221 - generate_input_data_score - INFO - 
+ 12000 pre records updated
+2019-06-27 12:40:28,637 - generate_input_data_score - INFO - 
+ 14000 pre records updated
+2019-06-27 12:41:16,147 - generate_input_data_score - INFO - 
+ 16000 pre records updated
+2019-06-27 12:42:02,773 - generate_input_data_score - INFO - 
+ 18000 pre records updated
+2019-06-27 12:42:49,720 - generate_input_data_score - INFO - 
+ 20000 pre records updated
+2019-06-27 12:43:35,849 - generate_input_data_score - INFO - 
+ 22000 pre records updated
+2019-06-27 12:44:22,623 - generate_input_data_score - INFO - 
+ 24000 pre records updated
+2019-06-27 12:45:09,171 - generate_input_data_score - INFO - 
+ 26000 pre records updated
+2019-06-27 12:45:55,609 - generate_input_data_score - INFO - 
+ 28000 pre records updated
+2019-06-27 12:46:42,092 - generate_input_data_score - INFO - 
+ 30000 pre records updated
+2019-06-27 12:47:28,925 - generate_input_data_score - INFO - 
+ 32000 pre records updated
+2019-06-27 12:48:14,922 - generate_input_data_score - INFO - 
+ 34000 pre records updated
+2019-06-27 12:49:01,664 - generate_input_data_score - INFO - 
+ 36000 pre records updated
+2019-06-27 12:49:47,880 - generate_input_data_score - INFO - 
+ 38000 pre records updated
+2019-06-27 12:50:33,716 - generate_input_data_score - INFO - 
+ 40000 pre records updated
+2019-06-27 12:51:20,146 - generate_input_data_score - INFO - 
+ 42000 pre records updated
+2019-06-27 12:52:05,859 - generate_input_data_score - INFO - 
+ 44000 pre records updated
+2019-06-27 12:52:51,204 - generate_input_data_score - INFO - 
+ 46000 pre records updated
+2019-06-27 12:53:37,800 - generate_input_data_score - INFO - 
+ 48000 pre records updated
+2019-06-27 12:54:25,424 - generate_input_data_score - INFO - 
+ 50000 pre records updated
+2019-06-27 12:54:28,215 - generate_input_data_score - INFO - 
+ 50001 pre - 0 post - data writing into files
+2019-06-27 13:15:15,299 - generate_input_data_score - INFO - 
+ basic will be written in the datasets
+2019-06-27 13:15:54,719 - generate_input_data_score - INFO - 
+ 2000 pre records updated
+2019-06-27 13:16:42,357 - generate_input_data_score - INFO - 
+ 4000 pre records updated
+2019-06-27 13:17:31,690 - generate_input_data_score - INFO - 
+ 6000 pre records updated
+2019-06-27 13:18:20,860 - generate_input_data_score - INFO - 
+ 8000 pre records updated
+2019-06-27 13:19:09,620 - generate_input_data_score - INFO - 
+ 10000 pre records updated
+2019-06-27 13:19:57,135 - generate_input_data_score - INFO - 
+ 12000 pre records updated
+2019-06-27 13:20:44,625 - generate_input_data_score - INFO - 
+ 14000 pre records updated
+2019-06-27 13:21:31,692 - generate_input_data_score - INFO - 
+ 16000 pre records updated
+2019-06-27 13:22:18,049 - generate_input_data_score - INFO - 
+ 18000 pre records updated
+2019-06-27 13:23:01,541 - generate_input_data_score - INFO - 
+ 20000 pre records updated
+2019-06-27 13:23:37,893 - generate_input_data_score - INFO - 
+ 22000 pre records updated
+2019-06-27 13:24:13,013 - generate_input_data_score - INFO - 
+ 24000 pre records updated
+2019-06-27 13:24:52,579 - generate_input_data_score - INFO - 
+ 26000 pre records updated
+2019-06-27 13:25:31,350 - generate_input_data_score - INFO - 
+ 28000 pre records updated
+2019-06-27 13:26:14,152 - generate_input_data_score - INFO - 
+ 30000 pre records updated
+2019-06-27 13:27:06,912 - generate_input_data_score - INFO - 
+ 32000 pre records updated
+2019-06-27 13:27:40,024 - generate_input_data_score - INFO - 
+ 33197 pre - 0 post - data writing into files
+2019-06-27 13:28:07,109 - generate_input_data_score - INFO - 
+ basic will be written in the datasets
+2019-06-27 13:29:07,649 - generate_input_data_score - INFO - 
+ 773 pre - 0 post - data writing into files
+2019-06-27 13:29:28,437 - generate_input_data_score - INFO - 
+ basic will be written in the datasets
+2019-06-27 13:30:14,359 - generate_input_data_score - INFO - 
+ 1401 pre - 0 post - data writing into files
+2019-06-27 13:30:27,800 - generate_input_data_score - INFO - 
+ basic will be written in the datasets
+2019-06-27 13:31:17,852 - generate_input_data_score - INFO - 
+ 2000 pre records updated
+2019-06-27 13:31:59,257 - generate_input_data_score - INFO - 
+ 4000 pre records updated
+2019-06-27 13:32:33,068 - generate_input_data_score - INFO - 
+ 6000 pre records updated
+2019-06-27 13:33:06,111 - generate_input_data_score - INFO - 
+ 8000 pre records updated
+2019-06-27 13:33:40,451 - generate_input_data_score - INFO - 
+ 10000 pre records updated
+2019-06-27 13:34:15,321 - generate_input_data_score - INFO - 
+ 12000 pre records updated
+2019-06-27 13:34:49,719 - generate_input_data_score - INFO - 
+ 14000 pre records updated
+2019-06-27 13:35:23,903 - generate_input_data_score - INFO - 
+ 16000 pre records updated
+2019-06-27 13:35:59,209 - generate_input_data_score - INFO - 
+ 18000 pre records updated
+2019-06-27 13:36:32,476 - generate_input_data_score - INFO - 
+ 20000 pre records updated
+2019-06-27 13:37:06,575 - generate_input_data_score - INFO - 
+ 22000 pre records updated
+2019-06-27 13:37:40,961 - generate_input_data_score - INFO - 
+ 24000 pre records updated
+2019-06-27 13:38:14,918 - generate_input_data_score - INFO - 
+ 26000 pre records updated
+2019-06-27 13:38:48,527 - generate_input_data_score - INFO - 
+ 28000 pre records updated
+2019-06-27 13:39:22,557 - generate_input_data_score - INFO - 
+ 30000 pre records updated
+2019-06-27 13:39:56,866 - generate_input_data_score - INFO - 
+ 32000 pre records updated
+2019-06-27 13:40:30,534 - generate_input_data_score - INFO - 
+ 34000 pre records updated
+2019-06-27 13:41:04,675 - generate_input_data_score - INFO - 
+ 36000 pre records updated
+2019-06-27 13:41:38,882 - generate_input_data_score - INFO - 
+ 38000 pre records updated
+2019-06-27 13:42:12,954 - generate_input_data_score - INFO - 
+ 40000 pre records updated
+2019-06-27 13:42:49,047 - generate_input_data_score - INFO - 
+ 42000 pre records updated
+2019-06-27 13:43:25,829 - generate_input_data_score - INFO - 
+ 44000 pre records updated
+2019-06-27 13:44:01,230 - generate_input_data_score - INFO - 
+ 46000 pre records updated
+2019-06-27 13:44:37,044 - generate_input_data_score - INFO - 
+ 48000 pre records updated
+2019-06-27 13:45:12,972 - generate_input_data_score - INFO - 
+ 50000 pre records updated
+2019-06-27 13:45:48,361 - generate_input_data_score - INFO - 
+ 52000 pre records updated
+2019-06-27 13:46:24,260 - generate_input_data_score - INFO - 
+ 54000 pre records updated
+2019-06-27 13:47:00,547 - generate_input_data_score - INFO - 
+ 56000 pre records updated
+2019-06-27 13:47:37,518 - generate_input_data_score - INFO - 
+ 58000 pre records updated
+2019-06-27 13:48:13,336 - generate_input_data_score - INFO - 
+ 60000 pre records updated
+2019-06-27 13:48:49,153 - generate_input_data_score - INFO - 
+ 62000 pre records updated
+2019-06-27 13:49:24,875 - generate_input_data_score - INFO - 
+ 64000 pre records updated
+2019-06-27 13:49:58,921 - generate_input_data_score - INFO - 
+ 66000 pre records updated
+2019-06-27 13:50:33,794 - generate_input_data_score - INFO - 
+ 68000 pre records updated
+2019-06-27 13:51:29,201 - generate_input_data_score - INFO - 
+ 70000 pre records updated
+2019-06-27 13:52:24,954 - generate_input_data_score - INFO - 
+ 72000 pre records updated
+2019-06-27 13:53:20,321 - generate_input_data_score - INFO - 
+ 74000 pre records updated
+2019-06-27 13:54:15,440 - generate_input_data_score - INFO - 
+ 76000 pre records updated
+2019-06-27 13:55:13,871 - generate_input_data_score - INFO - 
+ 78000 pre records updated
+2019-06-27 13:56:10,373 - generate_input_data_score - INFO - 
+ 80000 pre records updated
+2019-06-27 13:57:08,445 - generate_input_data_score - INFO - 
+ 82000 pre records updated
+2019-06-27 13:58:03,780 - generate_input_data_score - INFO - 
+ 84000 pre records updated
+2019-06-27 13:58:57,380 - generate_input_data_score - INFO - 
+ 86000 pre records updated
+2019-06-27 13:59:55,736 - generate_input_data_score - INFO - 
+ 88000 pre records updated
+2019-06-27 14:00:52,594 - generate_input_data_score - INFO - 
+ 90000 pre records updated
+2019-06-27 14:01:51,787 - generate_input_data_score - INFO - 
+ 92000 pre records updated
+2019-06-27 14:02:50,207 - generate_input_data_score - INFO - 
+ 94000 pre records updated
+2019-06-27 14:03:48,991 - generate_input_data_score - INFO - 
+ 96000 pre records updated
+2019-06-27 14:04:46,332 - generate_input_data_score - INFO - 
+ 98000 pre records updated
+2019-06-27 14:05:44,915 - generate_input_data_score - INFO - 
+ 100000 pre records updated
+2019-06-27 14:06:42,120 - generate_input_data_score - INFO - 
+ 102000 pre records updated
+2019-06-27 14:07:39,298 - generate_input_data_score - INFO - 
+ 104000 pre records updated
+2019-06-27 14:08:33,220 - generate_input_data_score - INFO - 
+ 106000 pre records updated
+2019-06-27 14:09:29,650 - generate_input_data_score - INFO - 
+ 108000 pre records updated
+2019-06-27 14:10:26,953 - generate_input_data_score - INFO - 
+ 110000 pre records updated
+2019-06-27 14:11:25,144 - generate_input_data_score - INFO - 
+ 112000 pre records updated
+2019-06-27 14:12:22,147 - generate_input_data_score - INFO - 
+ 114000 pre records updated
+2019-06-27 14:13:17,851 - generate_input_data_score - INFO - 
+ 116000 pre records updated
+2019-06-27 14:14:15,949 - generate_input_data_score - INFO - 
+ 118000 pre records updated
+2019-06-27 14:15:13,668 - generate_input_data_score - INFO - 
+ 120000 pre records updated
+2019-06-27 14:16:13,273 - generate_input_data_score - INFO - 
+ 122000 pre records updated
+2019-06-27 14:17:09,077 - generate_input_data_score - INFO - 
+ 124000 pre records updated
+2019-06-27 14:18:05,464 - generate_input_data_score - INFO - 
+ 126000 pre records updated
+2019-06-27 14:19:03,495 - generate_input_data_score - INFO - 
+ 128000 pre records updated
+2019-06-27 14:19:59,391 - generate_input_data_score - INFO - 
+ 130000 pre records updated
+2019-06-27 14:20:56,631 - generate_input_data_score - INFO - 
+ 132000 pre records updated
+2019-06-27 14:21:52,448 - generate_input_data_score - INFO - 
+ 134000 pre records updated
+2019-06-27 14:22:48,531 - generate_input_data_score - INFO - 
+ 136000 pre records updated
+2019-06-27 14:23:45,272 - generate_input_data_score - INFO - 
+ 138000 pre records updated
+2019-06-27 14:24:41,380 - generate_input_data_score - INFO - 
+ 140000 pre records updated
+2019-06-27 14:25:38,491 - generate_input_data_score - INFO - 
+ 142000 pre records updated
+2019-06-27 14:26:36,410 - generate_input_data_score - INFO - 
+ 144000 pre records updated
+2019-06-27 14:27:32,672 - generate_input_data_score - INFO - 
+ 146000 pre records updated
+2019-06-27 14:28:30,553 - generate_input_data_score - INFO - 
+ 148000 pre records updated
+2019-06-27 14:29:27,516 - generate_input_data_score - INFO - 
+ 150000 pre records updated
+2019-06-27 14:30:24,865 - generate_input_data_score - INFO - 
+ 152000 pre records updated
+2019-06-27 14:31:21,116 - generate_input_data_score - INFO - 
+ 154000 pre records updated
+2019-06-27 14:32:17,691 - generate_input_data_score - INFO - 
+ 156000 pre records updated
+2019-06-27 14:33:16,883 - generate_input_data_score - INFO - 
+ 158000 pre records updated
+2019-06-27 14:34:15,224 - generate_input_data_score - INFO - 
+ 160000 pre records updated
+2019-06-27 14:35:11,844 - generate_input_data_score - INFO - 
+ 162000 pre records updated
+2019-06-27 14:36:07,734 - generate_input_data_score - INFO - 
+ 164000 pre records updated
+2019-06-27 14:37:05,786 - generate_input_data_score - INFO - 
+ 166000 pre records updated
+2019-06-27 14:38:03,338 - generate_input_data_score - INFO - 
+ 168000 pre records updated
+2019-06-27 14:39:01,461 - generate_input_data_score - INFO - 
+ 170000 pre records updated
+2019-06-27 14:40:00,067 - generate_input_data_score - INFO - 
+ 172000 pre records updated
+2019-06-27 14:40:57,956 - generate_input_data_score - INFO - 
+ 174000 pre records updated
+2019-06-27 14:41:55,418 - generate_input_data_score - INFO - 
+ 176000 pre records updated
+2019-06-27 14:42:53,016 - generate_input_data_score - INFO - 
+ 178000 pre records updated
+2019-06-27 14:43:48,074 - generate_input_data_score - INFO - 
+ 180000 pre records updated
+2019-06-27 14:44:46,803 - generate_input_data_score - INFO - 
+ 182000 pre records updated
+2019-06-27 14:45:43,849 - generate_input_data_score - INFO - 
+ 184000 pre records updated
+2019-06-27 14:46:41,596 - generate_input_data_score - INFO - 
+ 186000 pre records updated
+2019-06-27 14:47:39,019 - generate_input_data_score - INFO - 
+ 188000 pre records updated
+2019-06-27 14:48:37,758 - generate_input_data_score - INFO - 
+ 190000 pre records updated
+2019-06-27 14:49:34,382 - generate_input_data_score - INFO - 
+ 192000 pre records updated
+2019-06-27 14:50:32,667 - generate_input_data_score - INFO - 
+ 194000 pre records updated
+2019-06-27 14:51:29,920 - generate_input_data_score - INFO - 
+ 196000 pre records updated
+2019-06-27 14:52:27,364 - generate_input_data_score - INFO - 
+ 198000 pre records updated
+2019-06-27 14:53:21,882 - generate_input_data_score - INFO - 
+ 200000 pre records updated
+2019-06-27 14:53:37,601 - generate_input_data_score - INFO - 
+ 200097 pre - 0 post - data writing into files
+2019-06-27 15:33:05,234 - generate_input_data_score - INFO - 
+ basic will be written in the datasets
+2019-06-27 15:33:43,150 - generate_input_data_score - INFO - 
+ 2000 pre records updated
+2019-06-27 15:34:22,578 - generate_input_data_score - INFO - 
+ 4000 pre records updated
+2019-06-27 15:35:01,604 - generate_input_data_score - INFO - 
+ 6000 pre records updated
+2019-06-27 15:35:41,412 - generate_input_data_score - INFO - 
+ 8000 pre records updated
+2019-06-27 15:36:21,385 - generate_input_data_score - INFO - 
+ 10000 pre records updated
+2019-06-27 15:36:59,746 - generate_input_data_score - INFO - 
+ 12000 pre records updated
+2019-06-27 15:37:37,422 - generate_input_data_score - INFO - 
+ 14000 pre records updated
+2019-06-27 15:38:17,076 - generate_input_data_score - INFO - 
+ 16000 pre records updated
+2019-06-27 15:38:57,935 - generate_input_data_score - INFO - 
+ 18000 pre records updated
+2019-06-27 15:39:37,542 - generate_input_data_score - INFO - 
+ 20000 pre records updated
+2019-06-27 15:40:16,622 - generate_input_data_score - INFO - 
+ 22000 pre records updated
+2019-06-27 15:40:54,219 - generate_input_data_score - INFO - 
+ 24000 pre records updated
+2019-06-27 15:41:33,836 - generate_input_data_score - INFO - 
+ 26000 pre records updated
+2019-06-27 15:42:12,202 - generate_input_data_score - INFO - 
+ 28000 pre records updated
+2019-06-27 15:42:50,920 - generate_input_data_score - INFO - 
+ 30000 pre records updated
+2019-06-27 15:42:55,151 - generate_input_data_score - INFO - 
+ 30076 pre - 0 post - data writing into files
+2019-06-27 15:45:43,752 - generate_input_data_score - INFO - 
+ basic will be written in the datasets
+2019-06-27 15:46:24,659 - generate_input_data_score - INFO - 
+ 2000 pre records updated
+2019-06-27 15:47:05,344 - generate_input_data_score - INFO - 
+ 4000 pre records updated
+2019-06-27 15:47:48,092 - generate_input_data_score - INFO - 
+ 6000 pre records updated
+2019-06-27 15:48:29,276 - generate_input_data_score - INFO - 
+ 8000 pre records updated
+2019-06-27 15:49:09,420 - generate_input_data_score - INFO - 
+ 10000 pre records updated
+2019-06-27 15:49:49,951 - generate_input_data_score - INFO - 
+ 12000 pre records updated
+2019-06-27 15:50:31,215 - generate_input_data_score - INFO - 
+ 14000 pre records updated
+2019-06-27 15:51:11,926 - generate_input_data_score - INFO - 
+ 16000 pre records updated
+2019-06-27 15:51:53,267 - generate_input_data_score - INFO - 
+ 18000 pre records updated
+2019-06-27 15:52:34,540 - generate_input_data_score - INFO - 
+ 20000 pre records updated
+2019-06-27 15:53:14,275 - generate_input_data_score - INFO - 
+ 22000 pre records updated
+2019-06-27 15:53:54,622 - generate_input_data_score - INFO - 
+ 24000 pre records updated
+2019-06-27 15:54:36,565 - generate_input_data_score - INFO - 
+ 26000 pre records updated
+2019-06-27 15:55:16,565 - generate_input_data_score - INFO - 
+ 28000 pre records updated
+2019-06-27 15:55:56,032 - generate_input_data_score - INFO - 
+ 30000 pre records updated
+2019-06-27 15:55:58,687 - generate_input_data_score - INFO - 
+ 30088 pre - 0 post - data writing into files
+2019-06-27 15:59:54,767 - generate_input_data_score - INFO - 
+ basic will be written in the datasets
+2019-06-27 16:00:25,424 - generate_input_data_score - INFO - 
+ basic will be written in the datasets
+2019-06-27 16:00:42,979 - generate_input_data_score - INFO - 
+ basic will be written in the datasets
+2019-06-27 16:02:25,113 - generate_input_data_score - INFO - 
+ 5000 pre records updated
+2019-06-27 16:02:25,114 - generate_input_data_score - INFO - 
+ 5000 post records updated
+2019-06-27 16:04:08,524 - generate_input_data_score - INFO - 
+ 10000 pre records updated
+2019-06-27 16:04:08,524 - generate_input_data_score - INFO - 
+ 10000 post records updated
+2019-06-27 16:05:49,716 - generate_input_data_score - INFO - 
+ 15000 pre records updated
+2019-06-27 16:05:49,717 - generate_input_data_score - INFO - 
+ 15000 post records updated
+2019-06-27 16:07:31,309 - generate_input_data_score - INFO - 
+ 20000 pre records updated
+2019-06-27 16:07:31,309 - generate_input_data_score - INFO - 
+ 20000 post records updated
+2019-06-27 16:09:15,689 - generate_input_data_score - INFO - 
+ 25000 pre records updated
+2019-06-27 16:09:15,690 - generate_input_data_score - INFO - 
+ 25000 post records updated
+2019-06-27 16:11:04,575 - generate_input_data_score - INFO - 
+ 29988 pre - 29988 post - data writing into files
+2019-06-27 16:16:39,383 - generate_input_data_score - INFO - 
+ basic will be written in the datasets
+2019-06-27 16:19:36,099 - generate_input_data_score - INFO - 
+ 5000 pre records updated
+2019-06-27 16:19:36,099 - generate_input_data_score - INFO - 
+ 5000 post records updated
+2019-06-27 16:22:32,162 - generate_input_data_score - INFO - 
+ 10000 pre records updated
+2019-06-27 16:22:32,162 - generate_input_data_score - INFO - 
+ 10000 post records updated
+2019-06-27 16:25:42,761 - generate_input_data_score - INFO - 
+ 15000 pre records updated
+2019-06-27 16:25:42,761 - generate_input_data_score - INFO - 
+ 15000 post records updated
+2019-06-27 16:29:33,328 - generate_input_data_score - INFO - 
+ 20000 pre records updated
+2019-06-27 16:29:33,328 - generate_input_data_score - INFO - 
+ 20000 post records updated
+2019-06-27 16:33:30,044 - generate_input_data_score - INFO - 
+ 25000 pre records updated
+2019-06-27 16:33:30,044 - generate_input_data_score - INFO - 
+ 25000 post records updated
+2019-06-27 16:37:25,868 - generate_input_data_score - INFO - 
+ 30000 pre records updated
+2019-06-27 16:37:25,868 - generate_input_data_score - INFO - 
+ 30000 post records updated
+2019-06-27 16:41:15,938 - generate_input_data_score - INFO - 
+ 35000 pre records updated
+2019-06-27 16:41:15,938 - generate_input_data_score - INFO - 
+ 35000 post records updated
+2019-06-27 16:45:14,322 - generate_input_data_score - INFO - 
+ 40000 pre records updated
+2019-06-27 16:45:14,322 - generate_input_data_score - INFO - 
+ 40000 post records updated
+2019-06-27 16:49:08,457 - generate_input_data_score - INFO - 
+ 45000 pre records updated
+2019-06-27 16:49:08,457 - generate_input_data_score - INFO - 
+ 45000 post records updated
+2019-06-27 16:53:02,965 - generate_input_data_score - INFO - 
+ 50000 pre records updated
+2019-06-27 16:53:02,965 - generate_input_data_score - INFO - 
+ 50000 post records updated
+2019-06-27 16:56:55,239 - generate_input_data_score - INFO - 
+ 55000 pre records updated
+2019-06-27 16:56:55,239 - generate_input_data_score - INFO - 
+ 55000 post records updated
+2019-06-27 17:00:47,566 - generate_input_data_score - INFO - 
+ 60000 pre records updated
+2019-06-27 17:00:47,566 - generate_input_data_score - INFO - 
+ 60000 post records updated
+2019-06-27 17:04:37,232 - generate_input_data_score - INFO - 
+ 65000 pre records updated
+2019-06-27 17:04:37,232 - generate_input_data_score - INFO - 
+ 65000 post records updated
+2019-06-27 17:08:30,835 - generate_input_data_score - INFO - 
+ 70000 pre records updated
+2019-06-27 17:08:30,835 - generate_input_data_score - INFO - 
+ 70000 post records updated
+2019-06-27 17:12:29,401 - generate_input_data_score - INFO - 
+ 75000 pre records updated
+2019-06-27 17:12:29,401 - generate_input_data_score - INFO - 
+ 75000 post records updated
+2019-06-27 17:16:25,940 - generate_input_data_score - INFO - 
+ 80000 pre records updated
+2019-06-27 17:16:25,940 - generate_input_data_score - INFO - 
+ 80000 post records updated
+2019-06-27 17:20:19,044 - generate_input_data_score - INFO - 
+ 85000 pre records updated
+2019-06-27 17:20:19,044 - generate_input_data_score - INFO - 
+ 85000 post records updated
+2019-06-27 17:24:11,613 - generate_input_data_score - INFO - 
+ 90000 pre records updated
+2019-06-27 17:24:11,613 - generate_input_data_score - INFO - 
+ 90000 post records updated
+2019-06-27 17:24:22,530 - generate_input_data_score - INFO - 
+ 90029 pre - 90029 post - data writing into files
+2019-06-27 18:22:54,688 - generate_input_data_score - INFO - 
+ basic will be written in the datasets
+2019-06-27 18:24:40,243 - generate_input_data_score - INFO - 
+ 5000 pre records updated
+2019-06-27 18:24:40,243 - generate_input_data_score - INFO - 
+ 5000 post records updated
+2019-06-27 18:26:29,321 - generate_input_data_score - INFO - 
+ 10000 pre records updated
+2019-06-27 18:26:29,321 - generate_input_data_score - INFO - 
+ 10000 post records updated
+2019-06-27 18:28:14,600 - generate_input_data_score - INFO - 
+ 15000 pre records updated
+2019-06-27 18:28:14,600 - generate_input_data_score - INFO - 
+ 15000 post records updated
+2019-06-27 18:30:01,397 - generate_input_data_score - INFO - 
+ 20000 pre records updated
+2019-06-27 18:30:01,398 - generate_input_data_score - INFO - 
+ 20000 post records updated
+2019-06-27 18:31:46,860 - generate_input_data_score - INFO - 
+ 25000 pre records updated
+2019-06-27 18:31:46,861 - generate_input_data_score - INFO - 
+ 25000 post records updated
+2019-06-27 18:33:33,517 - generate_input_data_score - INFO - 
+ 30000 pre records updated
+2019-06-27 18:33:33,517 - generate_input_data_score - INFO - 
+ 30000 post records updated
+2019-06-27 18:35:22,872 - generate_input_data_score - INFO - 
+ 35000 pre records updated
+2019-06-27 18:35:22,872 - generate_input_data_score - INFO - 
+ 35000 post records updated
+2019-06-27 18:37:09,452 - generate_input_data_score - INFO - 
+ 40000 pre records updated
+2019-06-27 18:37:09,453 - generate_input_data_score - INFO - 
+ 40000 post records updated
+2019-06-27 18:38:56,170 - generate_input_data_score - INFO - 
+ 45000 pre records updated
+2019-06-27 18:38:56,170 - generate_input_data_score - INFO - 
+ 45000 post records updated
+2019-06-27 18:40:43,836 - generate_input_data_score - INFO - 
+ 50000 pre records updated
+2019-06-27 18:40:43,836 - generate_input_data_score - INFO - 
+ 50000 post records updated
+2019-06-27 18:42:28,259 - generate_input_data_score - INFO - 
+ 55000 pre records updated
+2019-06-27 18:42:28,259 - generate_input_data_score - INFO - 
+ 55000 post records updated
+2019-06-27 18:44:15,519 - generate_input_data_score - INFO - 
+ 60000 pre records updated
+2019-06-27 18:44:15,519 - generate_input_data_score - INFO - 
+ 60000 post records updated
+2019-06-27 18:46:04,750 - generate_input_data_score - INFO - 
+ 65000 pre records updated
+2019-06-27 18:46:04,751 - generate_input_data_score - INFO - 
+ 65000 post records updated
+2019-06-27 18:47:53,824 - generate_input_data_score - INFO - 
+ 70000 pre records updated
+2019-06-27 18:47:53,825 - generate_input_data_score - INFO - 
+ 70000 post records updated
+2019-06-27 18:49:40,238 - generate_input_data_score - INFO - 
+ 75000 pre records updated
+2019-06-27 18:49:40,238 - generate_input_data_score - INFO - 
+ 75000 post records updated
+2019-06-27 18:51:28,421 - generate_input_data_score - INFO - 
+ 80000 pre records updated
+2019-06-27 18:51:28,421 - generate_input_data_score - INFO - 
+ 80000 post records updated
+2019-06-27 18:53:18,044 - generate_input_data_score - INFO - 
+ 85000 pre records updated
+2019-06-27 18:53:18,044 - generate_input_data_score - INFO - 
+ 85000 post records updated
+2019-06-27 18:55:05,988 - generate_input_data_score - INFO - 
+ 90000 pre records updated
+2019-06-27 18:55:05,989 - generate_input_data_score - INFO - 
+ 90000 post records updated
+2019-06-27 18:56:51,328 - generate_input_data_score - INFO - 
+ 95000 pre records updated
+2019-06-27 18:56:51,328 - generate_input_data_score - INFO - 
+ 95000 post records updated
+2019-06-27 18:58:43,307 - generate_input_data_score - INFO - 
+ 99812 pre - 99812 post - data writing into files
+2019-06-27 22:04:20,869 - generate_input_data_score - INFO - 
+ basic will be written in the datasets
+2019-06-27 22:05:15,950 - generate_input_data_score - INFO - 
+ 5000 pre records updated
+2019-06-27 22:05:15,950 - generate_input_data_score - INFO - 
+ 5000 post records updated

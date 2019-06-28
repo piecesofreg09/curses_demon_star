@@ -300,3 +300,39 @@ number of movements: 12000 | score : 624, life consumed: 1070
 2019-06-25 17:06:22,868 - training_results - INFO - 
  Before score training using models of : number of movements: 400001 | score : 27533, life consumed: 12538 
 
+2019-06-27 12:23:28,376 - training_results - INFO - 
+ Before score training, Using survival training predicter, number of movements: 401 | score : 41, life consumed: 7 
+
+2019-06-27 12:31:41,646 - training_results - INFO - 
+ Before score training, Using survival training predicter, number of movements: 10001 | score : 682, life consumed: 347 
+
+2019-06-27 12:54:28,215 - training_results - INFO - 
+ Before score training, Using survival training predicter, number of movements: 50001 | score : 3448, life consumed: 1622 
+
+2019-06-27 13:27:40,025 - training_results - INFO - 
+ Before score training, Using survival training predicter, number of movements: 33197 | score : 2212, life consumed: 1005 
+
+2019-06-27 13:29:07,649 - training_results - INFO - 
+ Before score training, Using survival training predicter, number of movements: 3070 | score : 173, life consumed: 166 
+
+2019-06-27 13:30:14,359 - training_results - INFO - 
+ Before score training, Using random steps, number of movements: 2709 | score : 178, life consumed: 67 
+
+2019-06-27 14:53:37,601 - training_results - INFO - 
+ Before score training, Using random steps, number of movements: 400001 | score : 23473, life consumed: 26710 
+
+2019-06-27 15:42:55,152 - training_results - INFO - 
+ Before score training, Using random steps, number of movements: 40001 | score : 2653, life consumed: 2432 
+
+2019-06-27 15:55:58,687 - training_results - INFO - 
+ Before score training, Using random steps, number of movements: 40001 | score : 2690, life consumed: 2415 
+
+2019-06-27 16:11:04,575 - training_results - INFO - 
+ Before score training, Using random steps, number of movements: 40001 | score : 2684, life consumed: 2275 
+
+2019-06-27 17:24:22,530 - training_results - INFO - 
+ Before score training, Using random steps, number of movements: 360344 | score : 17797, life consumed: 30001 
+
+2019-06-27 18:58:43,307 - training_results - INFO - 
+ Before score training, Using random steps, number of movements: 400001 | score : 5234, life consumed: 8327 
+
