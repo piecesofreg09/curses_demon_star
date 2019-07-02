@@ -1,5 +1,0 @@
-1. Add new window generation to all the draw menu functions
-
-2. Score training predicter
-
-2. Clip the data for score training and rerun the training alg

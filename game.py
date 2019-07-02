@@ -1,6 +1,7 @@
 import sys, os, curses, math, random, joblib, pickle, logging
 from curses import KEY_RIGHT, KEY_LEFT, KEY_UP, KEY_DOWN, BUTTON_CTRL
 import numpy as np
+import pandas as pd
 
 from pytablewriter import MarkdownTableWriter
 
@@ -16,13 +17,13 @@ color_changable = True
 # nf_global_survival_training means the fighter is firing or not
 # nf = True means no fires
 nf_global_survival_training = False
-enemy_freq_sur_train = 4
+enemy_freq_sur_train = 8
 
 # this bit sets on the score training or prediction of using #trained predicter from survival training or not
 # if yon_sctraining_using_svt is set as True, during score training
 # we will use the predicter generated from survival training
 # if yon_sctraining_using_svt is set False, random movements will be used
-yon_sctraining_using_svt = False
+yon_sctraining_using_svt = True
 
 # firing frequency it means one fire out of 4 movements, random
 fire_freq_during_score = 4
@@ -77,7 +78,10 @@ def init_screen(stdscr):
     stdscr.nodelay(1)
     height, width = stdscr.getmaxyx()
     reso = [height, width]
-    return [height, width, reso]
+    height, width = default_win_size
+    reso = default_win_size
+    win = curses.newwin(default_win_size[0], default_win_size[1])
+    return [height, width, reso, win]
 
 def init_game_stats(stdscr, reso, color_changable,
     cursor_y, cursor_x, starting_lives):
@@ -150,7 +154,7 @@ def fire_random_array(freq):
         x = [False]
     return random.choice(x)
 
-def draw_menu_survival_data(stdscr):
+def draw_menu_survival_data(stdscr1):
     
     # counting system
     k = 0
@@ -161,7 +165,7 @@ def draw_menu_survival_data(stdscr):
     move_passed = 0
     
     # initialize screen
-    height, width, reso = init_screen(stdscr)
+    height, width, reso, stdscr = init_screen(stdscr1)
     
     # initialize game stats
     starting_lives = 30000
@@ -255,7 +259,7 @@ def draw_menu_survival_data(stdscr):
             draw_game_over(stdscr, height)
             k = stdscr.getch()
             
-def draw_menu_survival_data_no_interrupt(stdscr, move_counts):
+def draw_menu_survival_data_no_interrupt(stdscr1, move_counts):
     # counting system
     cursor_x = 40
     cursor_y = 40
@@ -264,7 +268,7 @@ def draw_menu_survival_data_no_interrupt(stdscr, move_counts):
     move_passed = 0
     
     # initialize screen
-    height, width, reso = init_screen(stdscr)
+    height, width, reso, stdscr = init_screen(stdscr1)
     
     # initialize game stats
     starting_lives = 30000
@@ -353,7 +357,7 @@ def draw_menu_survival_data_no_interrupt(stdscr, move_counts):
         
         return [move_passed, stats['score'], starting_lives - stats['lives']]
 
-def draw_menu_after_survival(stdscr):
+def draw_menu_after_survival(stdscr1):
     k = 0
     cursor_x = 40
     cursor_y = 40
@@ -362,7 +366,7 @@ def draw_menu_after_survival(stdscr):
     move_passed = 0
 
     # initialize screen
-    height, width, reso = init_screen(stdscr)
+    height, width, reso, stdscr = init_screen(stdscr1)
     
     # initialize game stats
     starting_lives = 30000
@@ -442,7 +446,7 @@ def draw_menu_after_survival(stdscr):
             draw_game_over(stdscr, height)
             k = stdscr.getch()
     
-def draw_menu_after_survival_no_interrupt(stdscr, move_counts):
+def draw_menu_after_survival_no_interrupt(stdscr1, move_counts):
     # counting system
     cursor_x = 40
     cursor_y = 40
@@ -451,7 +455,7 @@ def draw_menu_after_survival_no_interrupt(stdscr, move_counts):
     move_passed = 0
 
     # initialize screen
-    height, width, reso = init_screen(stdscr)
+    height, width, reso, stdscr = init_screen(stdscr1)
     
     # initialize game stats
     starting_lives = 30000
@@ -526,7 +530,7 @@ def draw_menu_after_survival_no_interrupt(stdscr, move_counts):
         
         return [move_passed, stats['score'], starting_lives - stats['lives']]
 
-def draw_menu_score_data(stdscr):
+def draw_menu_score_data(stdscr1):
     k = 0
     cursor_x = 40
     cursor_y = 40
@@ -536,7 +540,7 @@ def draw_menu_score_data(stdscr):
     fire_fired = 0
 
     # initialize screen
-    height, width, reso = init_screen(stdscr)
+    height, width, reso, stdscr = init_screen(stdscr1)
     
     # initialize game stats
     starting_lives = 30000
@@ -590,10 +594,6 @@ def draw_menu_score_data(stdscr):
             one_fire = fighter_obj.fire_once([cursor_y - 2, cursor_x])
             #print(one_fire)
             fire_fired += 1
-        
-        
-        
-        if move[1]:
             score_updater.update_mother_post(one_fire)
         
         # check collisions and then update the objects
@@ -637,7 +637,7 @@ def draw_menu_score_data(stdscr):
             k = stdscr.getch()
     pass
 
-def draw_menu_score_data_no_interrupt(stdscr, move_counts):
+def draw_menu_score_data_no_interrupt(stdscr1, move_counts):
     
     cursor_x = 40
     cursor_y = 40
@@ -647,7 +647,7 @@ def draw_menu_score_data_no_interrupt(stdscr, move_counts):
     fire_fired = 0
 
     # initialize screen
-    height, width, reso = init_screen(stdscr)
+    height, width, reso, stdscr = init_screen(stdscr1)
     
     # initialize game stats
     starting_lives = 30000
@@ -700,9 +700,6 @@ def draw_menu_score_data_no_interrupt(stdscr, move_counts):
             enemies_obj)
             one_fire = fighter_obj.fire_once([cursor_y - 2, cursor_x])
             fire_fired += 1
-            #print(one_fire)
-        
-        if move[1]:
             score_updater.update_mother_post(one_fire)
         
         # check collisions and then update the objects
@@ -742,7 +739,7 @@ def draw_menu_score_data_no_interrupt(stdscr, move_counts):
         
     pass
 
-def draw_menu_after_score(stdscr):
+def draw_menu_after_score(stdscr1):
     k = 0
     cursor_x = 40
     cursor_y = 40
@@ -752,7 +749,7 @@ def draw_menu_after_score(stdscr):
     fire_fired = 0
 
     # initialize screen
-    height, width, reso = init_screen(stdscr)
+    height, width, reso, stdscr = init_screen(stdscr1)
     
     # initialize game stats
     starting_lives = 30000
@@ -769,24 +766,21 @@ def draw_menu_after_score(stdscr):
     score_recommender = ScorePredicter(['basic'])
     
     
-    while (k != ord('q')) and (stats['lives'] > 0) and move_passed <= 300000:
+    while (k != ord('q')) and (stats['lives'] > 0) and move_passed <= 30000:
         # Initialization
         stdscr.clear()
         
-        fire_or = score_recommender.predict_m(reso, fighter_obj, enemies_obj)
-        
+        # Generate direction
         if yon_sctraining_using_svt:
             move_dir = recommender.predict_m(reso, fighter_obj, enemies_obj)
         else:
             move_dir = random.choice(['D', 'U', 'L', 'R', 'N'])
-        # get a prediction of the directions from the trained model
-        move = [move_dir, fire_or]
         move_passed += 1
         
         
         # update the cursor and the positions of the fighter
         # using the movement popped out the list
-        cursor_x, cursor_y = cursor_update(move[0], cursor_x, cursor_y, reso)
+        cursor_x, cursor_y = cursor_update(move_dir, cursor_x, cursor_y, reso)
         stdscr.move(cursor_y, cursor_x)
         fighter_obj.move_fighter(cursor_y, cursor_x)
         
@@ -800,16 +794,14 @@ def draw_menu_after_score(stdscr):
             pos = [ry, rx]
             enemies_obj.create_one_enemy(pos)
         
-        # if the movement includes firing or not
-        if move[1]:
-            score_updater.update_mother_pre(reso, fighter_obj, 
-            enemies_obj)
+        
+        # predict based on score predictor
+        fire_or = score_recommender.predict_m(reso, fighter_obj, enemies_obj)
+        if fire_or:
             one_fire = fighter_obj.fire_once([cursor_y - 2, cursor_x])
-            #print(one_fire)
             fire_fired += 1
         
-        if move[1]:
-            score_updater.update_mother_post(one_fire)
+        
         
         # check collisions and then update the objects
         collision(enemies_obj, fighter_obj, stats)
@@ -823,18 +815,14 @@ def draw_menu_after_score(stdscr):
                 move_passed, stats['score'], stats['lives'])
         render_status_bar(stdscr, statusbarstr, height, width)
         
-        
         # Refresh the screen
         stdscr.refresh()
-        curses.napms(1)
 
         # Wait for next input
         k = stdscr.getch()
     
     else:
         k = stdscr.getch()
-        
-        score_updater.write_mother()
         
         logger = logging.getLogger('training_results')
         if_using_srv_training = ('Using survival training predicter: ' + 
@@ -852,7 +840,7 @@ def draw_menu_after_score(stdscr):
             k = stdscr.getch()
     pass
     
-def draw_menu_after_score_no_interrupt(stdscr, move_counts):
+def draw_menu_after_score_no_interrupt(stdscr1, move_counts):
     cursor_x = 40
     cursor_y = 40
     ene_total_count = 0
@@ -861,7 +849,7 @@ def draw_menu_after_score_no_interrupt(stdscr, move_counts):
     fire_fired = 0
 
     # initialize screen
-    height, width, reso = init_screen(stdscr)
+    height, width, reso, stdscr = init_screen(stdscr1)
     
     # initialize game stats
     starting_lives = 30000
@@ -881,20 +869,19 @@ def draw_menu_after_score_no_interrupt(stdscr, move_counts):
         # Initialization
         stdscr.clear()
         
-        fire_or = score_recommender.predict_m(reso, fighter_obj, enemies_obj)
         
+        # Generate direction
         if yon_sctraining_using_svt:
+            # get a prediction of the directions from the trained model
             move_dir = recommender.predict_m(reso, fighter_obj, enemies_obj)
         else:
             move_dir = random.choice(['D', 'U', 'L', 'R', 'N'])
-        # get a prediction of the directions from the trained model
-        move = [move_dir, fire_or]
         move_passed += 1
         
         
         # update the cursor and the positions of the fighter
         # using the movement popped out the list
-        cursor_x, cursor_y = cursor_update(move[0], cursor_x, cursor_y, reso)
+        cursor_x, cursor_y = cursor_update(move_dir, cursor_x, cursor_y, reso)
         stdscr.move(cursor_y, cursor_x)
         fighter_obj.move_fighter(cursor_y, cursor_x)
         
@@ -908,16 +895,12 @@ def draw_menu_after_score_no_interrupt(stdscr, move_counts):
             pos = [ry, rx]
             enemies_obj.create_one_enemy(pos)
         
-        # if the movement includes firing or not
-        if move[1]:
-            score_updater.update_mother_pre(reso, fighter_obj, 
-            enemies_obj)
+        # predict based on score predictor
+        fire_or = score_recommender.predict_m(reso, fighter_obj, enemies_obj)
+        if fire_or:
             one_fire = fighter_obj.fire_once([cursor_y - 2, cursor_x])
             fire_fired += 1
-            #print(one_fire)
-        
-        if move[1]:
-            score_updater.update_mother_post(one_fire)
+            
         
         # check collisions and then update the objects
         collision(enemies_obj, fighter_obj, stats)
@@ -937,9 +920,6 @@ def draw_menu_after_score_no_interrupt(stdscr, move_counts):
         
     else:
         
-        
-        score_updater.write_mother()
-        
         logger = logging.getLogger('training_results')
         if_using_srv_training = ('Using survival training predicter: ' + 
             str(yon_sctraining_using_svt) +  '\nUsing random steps: ' + 
@@ -956,28 +936,22 @@ def draw_menu_after_score_no_interrupt(stdscr, move_counts):
         
     pass
 
-def draw_menu(stdscr):
+def draw_menu(stdscr1):
     k = 0
     cursor_x = 40
     cursor_y = 40
-    
+    ene_total_count = 0
+    ene_appear_count = 0
 
-    init_screen(stdscr)
-    height, width = stdscr.getmaxyx()
-    reso = [height, width]
+    height, width, reso, stdscr = init_screen(stdscr1)
+    
     
     starting_lives = 30000
     
-    stats = {'score': 0, 'lives': starting_lives}
-    lives = stats['lives']
-    lives_old = stats['lives']
-    enemies_obj = Enemies(stdscr, reso, color_changable)
-    fighter_obj = Fighter(stdscr, reso, color_changable, cursor_y, cursor_x)
+    lives, lives_old, stats, enemies_obj, fighter_obj = init_game_stats(
+        stdscr, reso, color_changable, cursor_y, cursor_x, starting_lives)
     
-    ene_total_count = 0
-    ene_appear_count = 0
     
-
     # move_sets generates a random series of random steps
     # paired with fire or  not choices
     
@@ -1071,15 +1045,17 @@ def survival_data_no_interrupt(repeat_times):
             draw_menu_survival_data_no_interrupt, move_counts)
         ratioo = float(lil) / float(mp)
         data.append([lil, mp, ratioo])
-    data_np = np.array(data)
+    data_np = pd.DataFrame(data)
+    data_np_lack = pd.DataFrame(data[1:])
+    data_np = data_np.append(data_np_lack.mean(axis=0), ignore_index=True)
     data_np = np.transpose(data_np)
-    data_np_list = data_np.tolist()
+    data_np_list = np.array(data_np).tolist()
     
     
     writer = MarkdownTableWriter()
     writer.table_name = "collecting data during survival training"
     writer.headers = [" "] + \
-        [str(i + 1) for i in range(repeat_times)]
+        [str(i + 1) for i in range(repeat_times)] + ["average"]
     writer.value_matrix = data_np_list
     table_output = writer.dumps()
     
@@ -1104,15 +1080,17 @@ def game_after_survival_training_no_interrupt(repeat_times):
             draw_menu_after_survival_no_interrupt, move_counts)
         ratioo = float(lil) / float(mp)
         data.append([lil, mp, ratioo])
-    data_np = np.array(data)
+    data_np = pd.DataFrame(data)
+    data_np_lack = pd.DataFrame(data[1:])
+    data_np = data_np.append(data_np_lack.mean(axis=0), ignore_index=True)
     data_np = np.transpose(data_np)
-    data_np_list = data_np.tolist()
+    data_np_list = np.array(data_np).tolist()
     
     
     writer = MarkdownTableWriter()
     writer.table_name = "collecting data after survival training"
     writer.headers = [" "] + \
-        [str(i + 1) for i in range(repeat_times)]
+        [str(i + 1) for i in range(repeat_times)] + ["average"]
     writer.value_matrix = data_np_list
     table_output = writer.dumps()
     
@@ -1133,24 +1111,27 @@ def score_data_no_interrupt(repeat_times):
     
     move_counts = 12000
     data = [['Lives Consumed', 'Score', 'Fires', 'Moves',
-        'Ratio(Lives / Mov)', 'Ratio(Score / Mov)', 'Ratio(Score / Fires)']]
+        'Ratio(Lives / Mov)', 'Ratio(Score / Mov)', 'Ratio(Score / Fires)', 'Ratio(Score/F/M, %)']]
     for count in range(repeat_times):
         mp, frs, sc, lil = curses.wrapper(
             draw_menu_score_data_no_interrupt, move_counts)
         ratio_lm = float(lil) / float(mp)
         ratio_sm = float(sc) / float(mp)
         ratio_sf = float(sc) / float(frs)
+        ratio_sfm = float(sc) / float(frs) / float(mp) * 100
         data.append([lil, sc, frs, mp,
-            ratio_lm, ratio_sm, ratio_sf])
-    data_np = np.array(data)
+            ratio_lm, ratio_sm, ratio_sf, ratio_sfm])
+    data_np = pd.DataFrame(data)
+    data_np_lack = pd.DataFrame(data[1:])
+    data_np = data_np.append(data_np_lack.mean(axis=0), ignore_index=True)
     data_np = np.transpose(data_np)
-    data_np_list = data_np.tolist()
+    data_np_list = np.array(data_np).tolist()
     
     
     writer = MarkdownTableWriter()
     writer.table_name = "collecting data during score training"
     writer.headers = [" "] + \
-        [str(i + 1) for i in range(repeat_times)]
+        [str(i + 1) for i in range(repeat_times)] + ["average"]
     writer.value_matrix = data_np_list
     table_output = writer.dumps()
     
@@ -1169,26 +1150,29 @@ def game_after_score_training():
     
 def game_after_score_training_no_interrupt(repeat_times):
     
-    move_counts = 12000
+    move_counts = 120
     data = [['Lives Consumed', 'Score', 'Fires', 'Moves',
-        'Ratio(Lives / Mov)', 'Ratio(Score / Mov)', 'Ratio(Score / Fires)']]
+        'Ratio(Lives / Mov)', 'Ratio(Score / Mov)', 'Ratio(Score / Fires)', 'Ratio(Score/F/M, %)']]
     for count in range(repeat_times):
         mp, frs, sc, lil = curses.wrapper(
             draw_menu_after_score_no_interrupt, move_counts)
         ratio_lm = float(lil) / float(mp)
         ratio_sm = float(sc) / float(mp)
         ratio_sf = float(sc) / float(frs)
+        ratio_sfm = float(sc) / float(frs) / float(mp) * 100
         data.append([lil, sc, frs, mp,
-            ratio_lm, ratio_sm, ratio_sf])
-    data_np = np.array(data)
+            ratio_lm, ratio_sm, ratio_sf, ratio_sfm])
+    data_np = pd.DataFrame(data)
+    data_np_lack = pd.DataFrame(data[1:])
+    data_np = data_np.append(data_np_lack.mean(axis=0), ignore_index=True)
     data_np = np.transpose(data_np)
-    data_np_list = data_np.tolist()
+    data_np_list = np.array(data_np).tolist()
     
     
     writer = MarkdownTableWriter()
     writer.table_name = "collecting data after score training"
     writer.headers = [" "] + \
-        [str(i + 1) for i in range(repeat_times)]
+        [str(i + 1) for i in range(repeat_times)] + ["average"]
     writer.value_matrix = data_np_list
     table_output = writer.dumps()
     

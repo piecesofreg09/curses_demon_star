@@ -254,6 +254,7 @@ class SurvivalPredicter:
     '''
     types = ['basic', 'short', 'pics']
     type_dict = {type_s:False for type_s in types}
+    predictors = {type_s:None for type_s in types}
     
     def __init__(self, options, nf=True):
         self.predicter_funcs = {'basic': self.predict_basic,
@@ -261,10 +262,23 @@ class SurvivalPredicter:
             'pics': self.predict_basic_pics}
         self.nf = nf
         
+        self.load_dir_fires = {'basic': 'model_svc_survive_fs.joblib',
+            'short': 'model_svc_survive_fs.joblib', 
+            'pics': 'model_svc_survive_fs.joblib'}
+        self.load_dir_nf = {'basic': 'model_svc_survive_nf.joblib',
+            'short': 'model_svc_survive_nf.joblib', 
+            'pics': 'model_svc_survive_nf.joblib'}
+        
         for type_s in self.types:
             if type_s in options:
                 self.type_dict[type_s] = True
                 logger.info('%s will be used to create predictions', type_s)
+                # this nf digit chooses which model 
+                # to select from the survival training
+                if self.nf:
+                    self.predictors[type_s] = joblib.load(os.path.join(os.curdir, 'Models', self.load_dir_nf[type_s]))
+                else:
+                    self.predictors[type_s] = joblib.load(os.path.join(os.curdir, 'Models', self.load_dir_fires[type_s]))
         pass
     
     def predict_m(self, reso, fighter_obj, enemies_obj):
@@ -298,13 +312,8 @@ class SurvivalPredicter:
         pass
     def predict_basic_pics(self, reso, fighter_obj, enemies_obj):
         
-        # this nf digit chooses which model 
-        # to select from the survival training
-        if self.nf == True:
-            predicter = joblib.load(os.path.join(os.curdir, 'Models', 'model_svc_survive_nf.joblib'))
-        else:
-            predicter = joblib.load(os.path.join(os.curdir, 'Models', 'model_svc_survive_fs.joblib'))
-        
+        type_s = 'pics'
+        predictor = self.predictors[type_s]
         
         # potent is the potential list of possible movements
         potent = []
@@ -314,7 +323,7 @@ class SurvivalPredicter:
         for dir in list(move_map.keys()):
             move_two_digits = move_map[dir]
             input_data = temp + move_two_digits
-            suggestion = predicter.predict([input_data])
+            suggestion = predictor.predict([input_data])
             if suggestion[0] == 1:
                 potent.append(dir)
         if potent:
