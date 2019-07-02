@@ -27,3 +27,8 @@ The game is written in curses on python 3.6. It is a simple shooting game. Movin
   <img src="https://github.com/piecesofreg09/curses_demon_star/blob/master/Pics/game_over.PNG" width='350px' />
 </p>
 
+## 2. Training
+
+### 2.1 Generating Data
+
+After creating the game, generating the data is easy.
