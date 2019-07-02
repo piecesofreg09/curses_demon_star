@@ -24,5 +24,6 @@ The game is written in curses on python 3.6. It is a simple shooting game. Movin
 
 <p align="center">
   <img src="https://github.com/piecesofreg09/curses_demon_star/blob/master/Pics/simple_game.PNG" height='250px' />
+  <img src="https://github.com/piecesofreg09/curses_demon_star/blob/master/Pics/game_over.PNG" height='250px' />
 </p>
 
