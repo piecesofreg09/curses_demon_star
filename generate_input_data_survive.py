@@ -320,7 +320,7 @@ class SurvivalPredicter:
         if potent:
             return potent
         else:
-            return random.choice(['D', 'U', 'L', 'R', 'N'])
+            return [random.choice(['D', 'U', 'L', 'R', 'N'])]
         pass
         
         

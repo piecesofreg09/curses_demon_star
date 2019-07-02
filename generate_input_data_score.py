@@ -3,6 +3,9 @@ import pandas as pd
 import numpy as np
 import math, os
 import logging
+from collections import Counter
+import joblib
+import random
 
 move_map = {'U': [-1, 0], 'D': [1, 0], 
     'L': [0, -1], 'R': [0, 1], 'N': [0, 0]}
@@ -96,40 +99,16 @@ class ScoreDataUpdaterWriter:
     def update_1_pre(self, reso, fighter_obj, enemies_obj):
         type_s = 'basic'
         
-        height, width = reso
-        enemies = enemies_obj.enemies
         fighter = fighter_obj
-        fires = fighter_obj.fires
-        
-        wing_size = 2
-        ene_fire = [[0 for i in range(height)] for i in range(2 * wing_size + 1)]
-        
         fighter_y, fighter_x = fighter.pos
         
-        for i, enemy in enumerate(enemies):
-            posy, posx = enemy.pos
-            posy = math.floor(posy)
-            posx = math.floor(posx)
-            if np.abs(posx - fighter_x) <= wing_size:
-                ene_fire[posx - fighter_x + wing_size][posy] = 1
-        
-        for i, fire in enumerate(fires):
-            posy, posx = fire.pos
-            posy = math.floor(posy)
-            posx = math.floor(posx)
-            if np.abs(posx - fighter_x) <= wing_size:
-                ene_fire[posx - fighter_x + wing_size][posy] = 2
-        
-        temp_ene_fire = pd.DataFrame(ene_fire)
-        
-        temp_ene_fire = temp_ene_fire.values.flatten().tolist()
-        #print(temp_ene_fire)
+        temp_ene_fire = enemy_fire_1(reso, fighter_obj, enemies_obj)
         
         self.data[type_s].data.append(temp_ene_fire + [fighter_y])
         
         
         pass
-        
+    
     @classmethod
     def update_1_post(self, one_fire):
         type_s = 'basic'
@@ -153,18 +132,70 @@ class ScoreDataUpdaterWriter:
     
     @classmethod
     def update_2_pre(self, reso, fighter_obj, enemies_obj):
+        '''In this method, only the position above is saved
+        '''
+        type_s = 'short'
+        
+        height, width = reso
+        enemies = enemies_obj.enemies
+        fighter = fighter_obj
+        fires = fighter_obj.fires
+        
+        wing_height = 20
+        wing_size = 2
+        ene_fire = [[0 for i in range(wing_height)] for i in range(2 * wing_size + 1)]
+        
+        fighter_y, fighter_x = fighter.pos
+        
+        for i, enemy in enumerate(enemies):
+            posy, posx = enemy.pos
+            posy = math.floor(posy)
+            posx = math.floor(posx)
+            if np.abs(posx - fighter_x) <= wing_size:
+                if posy <= fighter_y and posy > fighter_y - wing_height:
+                    ene_fire[posx - fighter_x + wing_size][fighter_y - posy] = 1
+        
+        for i, fire in enumerate(fires):
+            posy, posx = fire.pos
+            posy = math.floor(posy)
+            posx = math.floor(posx)
+            if np.abs(posx - fighter_x) <= wing_size:
+                if posy <= fighter_y and posy > fighter_y - wing_height:
+                    ene_fire[posx - fighter_x + wing_size][fighter_y - posy] = 2
+        
+        temp_ene_fire = pd.DataFrame(ene_fire)
+        
+        temp_ene_fire = temp_ene_fire.values.flatten().tolist()
+        #print(temp_ene_fire)
+        
+        self.data[type_s].data.append(temp_ene_fire)
         pass
     
     @classmethod
     def update_2_post(self, one_fire):
+        type_s = 'short'
+        self.data[type_s].fire_target.append(one_fire)
         pass
     
     @classmethod
     def write_2(self):
+        type_s = 'short'
+        
+        #print(self.data[type_s].fire_target)
+        
+        self.data[type_s].target = [1 if i.targeted == True else 0 for i in self.data[type_s].fire_target]
+        
+        data_dir = os.path.join(os.curdir, 'Data', 'Score', 'data_short.pkl')
+        with open(data_dir, 'wb') as out_file:
+            ot = {'data': pd.DataFrame(self.data[type_s].data), 'target': pd.DataFrame(self.data[type_s].target)}
+            pickle.dump(ot, out_file)
+        
         pass
 
     @classmethod
     def update_3_pre(self, reso, fighter_obj, enemies_obj):
+        '''The column thing is bad
+        '''
         
         type_s = 'pics'
         
@@ -251,7 +282,8 @@ class ScorePredicter:
             if self.type_dict[type_s] == True:
                 temp = self.predicter_funcs[type_s](reso, fighter_obj, enemies_obj)
                 res.extend(temp)
-        
+        print()
+        print(res)
         #print(res)
         # the following step is trying to find out the most frequent elements, if
         # the frequencies are the same for some directions, a random
@@ -263,44 +295,63 @@ class ScorePredicter:
         for dir, count in dict(counting_res).items():
             if count == most_freq:
                 pot.append(dir)
+        print(pot)
         
-        # the prediction is based on no fires fired from the fighter
         return random.choice(pot)
         
     def predict_1(self, reso, fighter_obj, enemies_obj):
-        return None
+        
+        predicter = joblib.load(os.path.join(os.curdir, 'Models', 
+            'model_score_75_method_1.joblib'))
+        
+        fighter = fighter_obj
+        fighter_y, fighter_x = fighter.pos
+        
+        temp_ene_fire = enemy_fire_1(reso, fighter_obj, enemies_obj)
+        
+        suggestion = predicter.predict([temp_ene_fire + [fighter_y]])
+        return list(suggestion)
+        
         pass
+        
     def predict_2(self, reso, fighter_obj, enemies_obj):
         return None
         pass
+        
     def predict_3(self, reso, fighter_obj, enemies_obj):
-        
-        # this using_st digit chooses which model 
-        # if it is True, then use the data generated using survival training
-        # if it is False, then use randomly generated movements and fires
-        if self.using_st == True:
-            predicter = joblib.load(os.path.join(os.curdir, 'Models', ''))
-        else:
-            predicter = joblib.load(os.path.join(os.curdir, 'Models', ''))
-        
-        
-        # potent is the potential list of possible movements
-        potent = []
-        
-        temp = enemy_figher_pics(reso, fighter_obj, enemies_obj)
-        
-        for dir in list(move_map.keys()):
-            move_two_digits = move_map[dir]
-            input_data = temp + move_two_digits
-            suggestion = predicter.predict([input_data])
-            if suggestion[0] == 1:
-                potent.append(dir)
-        if potent:
-            return potent
-        else:
-            return random.choice(['D', 'U', 'L', 'R', 'N'])
+        return None
         pass
-    pass
-
-def enemy_fighter_pics_x():
+        
+    
+def enemy_fire_1(reso, fighter_obj, enemies_obj):
+    height, width = reso
+    enemies = enemies_obj.enemies
+    fighter = fighter_obj
+    fires = fighter_obj.fires
+    
+    wing_size = 2
+    ene_fire = [[0 for i in range(height)] for i in range(2 * wing_size + 1)]
+    
+    fighter_y, fighter_x = fighter.pos
+    
+    for i, enemy in enumerate(enemies):
+        posy, posx = enemy.pos
+        posy = math.floor(posy)
+        posx = math.floor(posx)
+        if np.abs(posx - fighter_x) <= wing_size:
+            ene_fire[posx - fighter_x + wing_size][posy] = 1
+    
+    for i, fire in enumerate(fires):
+        posy, posx = fire.pos
+        posy = math.floor(posy)
+        posx = math.floor(posx)
+        if np.abs(posx - fighter_x) <= wing_size:
+            ene_fire[posx - fighter_x + wing_size][posy] = 2
+    
+    temp_ene_fire = pd.DataFrame(ene_fire)
+    
+    temp_ene_fire = temp_ene_fire.values.flatten().tolist()
+    
+    return temp_ene_fire
+    
     pass

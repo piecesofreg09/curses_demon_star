@@ -16,13 +16,19 @@ color_changable = True
 # nf_global_survival_training means the fighter is firing or not
 # nf = True means no fires
 nf_global_survival_training = False
-enemy_freq_sur_train = 8
+enemy_freq_sur_train = 4
 
 # this bit sets on the score training or prediction of using #trained predicter from survival training or not
 # if yon_sctraining_using_svt is set as True, during score training
 # we will use the predicter generated from survival training
 # if yon_sctraining_using_svt is set False, random movements will be used
 yon_sctraining_using_svt = False
+
+# firing frequency it means one fire out of 4 movements, random
+fire_freq_during_score = 4
+fire_freq_during_survival = 4
+
+# default window size
 default_win_size = [44, 80]
 
 move_direction_maps = {'U': np.array([-1.0, 0.0]),
@@ -136,6 +142,14 @@ def random_enemy_rx_ry(height):
     ry = np.random.randint(5, np.floor(height / 2))
     return [rx, ry]
 
+def fire_random_array(freq):
+    freq = int(np.ceil(freq))
+    if freq >= 1:
+        x = [True] + [False for i in range(freq - 1)]
+    else:
+        x = [False]
+    return random.choice(x)
+
 def draw_menu_survival_data(stdscr):
     
     # counting system
@@ -163,9 +177,9 @@ def draw_menu_survival_data(stdscr):
     nf = nf_global_survival_training
     for i in range(200000):
         if nf == True:
-            fire_or = random.choice([False, False, False, False])
+            fire_or = fire_random_array(0)
         else:
-            fire_or = random.choice([True, False, False, False])
+            fire_or = fire_random_array(fire_freq_during_survival)
         move_sets.append([random.choice(['D', 'U', 'L', 'R', 'N']),
             fire_or])
     
@@ -266,9 +280,9 @@ def draw_menu_survival_data_no_interrupt(stdscr, move_counts):
     nf = nf_global_survival_training
     for i in range(move_counts):
         if nf == True:
-            fire_or = random.choice([False, False, False, False])
+            fire_or = fire_random_array(0)
         else:
-            fire_or = random.choice([True, False, False, False])
+            fire_or = fire_random_array(fire_freq_during_survival)
         move_sets.append([random.choice(['D', 'U', 'L', 'R', 'N']),
             fire_or])
     
@@ -366,9 +380,9 @@ def draw_menu_after_survival(stdscr):
         stdscr.clear()
         
         if nf == True:
-            fire_or = random.choice([False, False, False, False])
+            fire_or = fire_random_array(0)
         else:
-            fire_or = random.choice([True, False, False, False])
+            fire_or = fire_random_array(fire_freq_during_survival)
         
         
         # get a prediction of the directions from the trained model
@@ -455,9 +469,9 @@ def draw_menu_after_survival_no_interrupt(stdscr, move_counts):
         stdscr.clear()
         
         if nf == True:
-            fire_or = random.choice([False, False, False, False])
+            fire_or = fire_random_array(0)
         else:
-            fire_or = random.choice([True, False, False, False])
+            fire_or = fire_random_array(fire_freq_during_survival)
         
         
         # get a prediction of the directions from the trained model
@@ -519,6 +533,7 @@ def draw_menu_score_data(stdscr):
     ene_total_count = 0
     ene_appear_count = 0
     move_passed = 0
+    fire_fired = 0
 
     # initialize screen
     height, width, reso = init_screen(stdscr)
@@ -534,14 +549,14 @@ def draw_menu_score_data(stdscr):
     nf = nf_global_survival_training
     recommender = SurvivalPredicter(['pics'], nf)
     
-    score_updater = ScoreDataUpdaterWriter(['basic'])
+    score_updater = ScoreDataUpdaterWriter(['basic', 'short'])
     
     
-    while (k != ord('q')) and (stats['lives'] > 0) and move_passed <= 800000:
+    while (k != ord('q')) and (stats['lives'] > 0) and move_passed <= 300000:
         # Initialization
         stdscr.clear()
         
-        fire_or = random.choice([True, True, True, False])
+        fire_or = fire_random_array(fire_freq_during_score)
         
         if yon_sctraining_using_svt:
             move_dir = recommender.predict_m(reso, fighter_obj, enemies_obj)
@@ -561,7 +576,7 @@ def draw_menu_score_data(stdscr):
         
         # create enemy
         ene_appear_count += 1
-        if ene_appear_count % enemy_freq_sur_train == 1:
+        if ene_appear_count % enemy_freq_sur_train == 0:
             ene_total_count += 1
             ry = np.floor(height / 10)
             rx = np.random.randint(3, width - 3)
@@ -574,7 +589,7 @@ def draw_menu_score_data(stdscr):
             enemies_obj)
             one_fire = fighter_obj.fire_once([cursor_y - 2, cursor_x])
             #print(one_fire)
-        
+            fire_fired += 1
         
         
         
@@ -607,11 +622,14 @@ def draw_menu_score_data(stdscr):
         score_updater.write_mother()
         
         logger = logging.getLogger('training_results')
-        if_using_srv_training = ('Using survival training predicter, ' if
-            yon_sctraining_using_svt else 'Using random steps, ')
-        ot_str = ('Before score training, ' + if_using_srv_training + 
-            "number of movements: {} | score : {}, life consumed: {} \n".format(
-                move_passed, stats['score'], starting_lives - stats['lives']))
+        if_using_srv_training = ('Using survival training predicter: ' + 
+            str(yon_sctraining_using_svt) +  '\nUsing random steps: ' + 
+            str(not yon_sctraining_using_svt) + '\n')
+        ot_str = ('Before score training, \n' + if_using_srv_training + 
+            "number of movements: {}, number of fires: {} \n".format(
+                move_passed, fire_fired) + 
+            "score : {}, life consumed: {} \n".format(
+                stats['score'], starting_lives - stats['lives']))
         logger.info(ot_str)
         
         while (k != ord('q') and k != ord('Q')):
@@ -620,12 +638,322 @@ def draw_menu_score_data(stdscr):
     pass
 
 def draw_menu_score_data_no_interrupt(stdscr, move_counts):
+    
+    cursor_x = 40
+    cursor_y = 40
+    ene_total_count = 0
+    ene_appear_count = 0
+    move_passed = 0
+    fire_fired = 0
+
+    # initialize screen
+    height, width, reso = init_screen(stdscr)
+    
+    # initialize game stats
+    starting_lives = 30000
+    lives, lives_old, stats, enemies_obj, fighter_obj = init_game_stats(
+        stdscr, reso, color_changable, cursor_y, cursor_x, starting_lives)
+    
+    # initializer predicter/recommender
+    # the global_survival_training digit is used for the predicter
+    # to select the correct prediction model
+    nf = nf_global_survival_training
+    recommender = SurvivalPredicter(['pics'], nf)
+    
+    score_updater = ScoreDataUpdaterWriter([])
+    
+    
+    while (stats['lives'] > 0) and (move_passed <= move_counts):
+        # Initialization
+        stdscr.clear()
+        
+        fire_or = fire_random_array(fire_freq_during_score)
+        
+        if yon_sctraining_using_svt:
+            move_dir = recommender.predict_m(reso, fighter_obj, enemies_obj)
+        else:
+            move_dir = random.choice(['D', 'U', 'L', 'R', 'N'])
+        # get a prediction of the directions from the trained model
+        move = [move_dir, fire_or]
+        move_passed += 1
+        
+        
+        # update the cursor and the positions of the fighter
+        # using the movement popped out the list
+        cursor_x, cursor_y = cursor_update(move[0], cursor_x, cursor_y, reso)
+        stdscr.move(cursor_y, cursor_x)
+        fighter_obj.move_fighter(cursor_y, cursor_x)
+        
+        
+        # create enemy
+        ene_appear_count += 1
+        if ene_appear_count % enemy_freq_sur_train == 0:
+            ene_total_count += 1
+            ry = np.floor(height / 10)
+            rx = np.random.randint(3, width - 3)
+            pos = [ry, rx]
+            enemies_obj.create_one_enemy(pos)
+        
+        # if the movement includes firing or not
+        if move[1]:
+            score_updater.update_mother_pre(reso, fighter_obj, 
+            enemies_obj)
+            one_fire = fighter_obj.fire_once([cursor_y - 2, cursor_x])
+            fire_fired += 1
+            #print(one_fire)
+        
+        if move[1]:
+            score_updater.update_mother_post(one_fire)
+        
+        # check collisions and then update the objects
+        collision(enemies_obj, fighter_obj, stats)
+        fighter_obj.update_fires()
+        enemies_obj.update_enemies()
+        enemies_obj.update_topedoes()
+        
+        # Render status bar
+        statusbarstr = "Press 'q' to exit " + \
+            "| {}, {}, {} | score : {}, life left: {}".format(cursor_x, cursor_y,
+                move_passed, stats['score'], stats['lives'])
+        render_status_bar(stdscr, statusbarstr, height, width)
+        
+        
+        # Refresh the screen
+        stdscr.refresh()
+        
+    else:
+        
+        
+        score_updater.write_mother()
+        
+        logger = logging.getLogger('training_results')
+        if_using_srv_training = ('Using survival training predicter: ' + 
+            str(yon_sctraining_using_svt) +  '\nUsing random steps: ' + 
+            str(not yon_sctraining_using_svt) + '\n')
+        ot_str = ('Before score training, \n' + if_using_srv_training + 
+            "number of movements: {}, number of fires: {} \n".format(
+                move_passed, fire_fired) + 
+            "score : {}, life consumed: {} \n".format(
+                stats['score'], starting_lives - stats['lives']))
+        logger.info(ot_str)
+        
+        return [move_passed, fire_fired, 
+            stats['score'], starting_lives - stats['lives']]
+        
     pass
 
 def draw_menu_after_score(stdscr):
+    k = 0
+    cursor_x = 40
+    cursor_y = 40
+    ene_total_count = 0
+    ene_appear_count = 0
+    move_passed = 0
+    fire_fired = 0
+
+    # initialize screen
+    height, width, reso = init_screen(stdscr)
+    
+    # initialize game stats
+    starting_lives = 30000
+    lives, lives_old, stats, enemies_obj, fighter_obj = init_game_stats(
+        stdscr, reso, color_changable, cursor_y, cursor_x, starting_lives)
+    
+    # initializer predicter/recommender
+    # the global_survival_training digit is used for the predicter
+    # to select the correct prediction model
+    nf = nf_global_survival_training
+    recommender = SurvivalPredicter(['pics'], nf)
+    
+    score_updater = ScoreDataUpdaterWriter([])
+    score_recommender = ScorePredicter(['basic'])
+    
+    
+    while (k != ord('q')) and (stats['lives'] > 0) and move_passed <= 300000:
+        # Initialization
+        stdscr.clear()
+        
+        fire_or = score_recommender.predict_m(reso, fighter_obj, enemies_obj)
+        
+        if yon_sctraining_using_svt:
+            move_dir = recommender.predict_m(reso, fighter_obj, enemies_obj)
+        else:
+            move_dir = random.choice(['D', 'U', 'L', 'R', 'N'])
+        # get a prediction of the directions from the trained model
+        move = [move_dir, fire_or]
+        move_passed += 1
+        
+        
+        # update the cursor and the positions of the fighter
+        # using the movement popped out the list
+        cursor_x, cursor_y = cursor_update(move[0], cursor_x, cursor_y, reso)
+        stdscr.move(cursor_y, cursor_x)
+        fighter_obj.move_fighter(cursor_y, cursor_x)
+        
+        
+        # create enemy
+        ene_appear_count += 1
+        if ene_appear_count % enemy_freq_sur_train == 0:
+            ene_total_count += 1
+            ry = np.floor(height / 10)
+            rx = np.random.randint(3, width - 3)
+            pos = [ry, rx]
+            enemies_obj.create_one_enemy(pos)
+        
+        # if the movement includes firing or not
+        if move[1]:
+            score_updater.update_mother_pre(reso, fighter_obj, 
+            enemies_obj)
+            one_fire = fighter_obj.fire_once([cursor_y - 2, cursor_x])
+            #print(one_fire)
+            fire_fired += 1
+        
+        if move[1]:
+            score_updater.update_mother_post(one_fire)
+        
+        # check collisions and then update the objects
+        collision(enemies_obj, fighter_obj, stats)
+        fighter_obj.update_fires()
+        enemies_obj.update_enemies()
+        enemies_obj.update_topedoes()
+        
+        # Render status bar
+        statusbarstr = "Press 'q' to exit " + \
+            "| {}, {}, {} | score : {}, life left: {}".format(cursor_x, cursor_y,
+                move_passed, stats['score'], stats['lives'])
+        render_status_bar(stdscr, statusbarstr, height, width)
+        
+        
+        # Refresh the screen
+        stdscr.refresh()
+        curses.napms(1)
+
+        # Wait for next input
+        k = stdscr.getch()
+    
+    else:
+        k = stdscr.getch()
+        
+        score_updater.write_mother()
+        
+        logger = logging.getLogger('training_results')
+        if_using_srv_training = ('Using survival training predicter: ' + 
+            str(yon_sctraining_using_svt) +  '\nUsing random steps: ' + 
+            str(not yon_sctraining_using_svt) + '\n')
+        ot_str = ('After score training, \n' + if_using_srv_training + 
+            "number of movements: {}, number of fires: {} \n".format(
+                move_passed, fire_fired) + 
+            "score : {}, life consumed: {} \n".format(
+                stats['score'], starting_lives - stats['lives']))
+        logger.info(ot_str)
+        
+        while (k != ord('q') and k != ord('Q')):
+            draw_game_over(stdscr, height)
+            k = stdscr.getch()
     pass
     
 def draw_menu_after_score_no_interrupt(stdscr, move_counts):
+    cursor_x = 40
+    cursor_y = 40
+    ene_total_count = 0
+    ene_appear_count = 0
+    move_passed = 0
+    fire_fired = 0
+
+    # initialize screen
+    height, width, reso = init_screen(stdscr)
+    
+    # initialize game stats
+    starting_lives = 30000
+    lives, lives_old, stats, enemies_obj, fighter_obj = init_game_stats(
+        stdscr, reso, color_changable, cursor_y, cursor_x, starting_lives)
+    
+    # initializer predicter/recommender
+    # the global_survival_training digit is used for the predicter
+    # to select the correct prediction model
+    nf = nf_global_survival_training
+    recommender = SurvivalPredicter(['pics'], nf)
+    
+    score_updater = ScoreDataUpdaterWriter([])
+    score_recommender = ScorePredicter(['basic'])
+    
+    while (stats['lives'] > 0) and (move_passed <= move_counts):
+        # Initialization
+        stdscr.clear()
+        
+        fire_or = score_recommender.predict_m(reso, fighter_obj, enemies_obj)
+        
+        if yon_sctraining_using_svt:
+            move_dir = recommender.predict_m(reso, fighter_obj, enemies_obj)
+        else:
+            move_dir = random.choice(['D', 'U', 'L', 'R', 'N'])
+        # get a prediction of the directions from the trained model
+        move = [move_dir, fire_or]
+        move_passed += 1
+        
+        
+        # update the cursor and the positions of the fighter
+        # using the movement popped out the list
+        cursor_x, cursor_y = cursor_update(move[0], cursor_x, cursor_y, reso)
+        stdscr.move(cursor_y, cursor_x)
+        fighter_obj.move_fighter(cursor_y, cursor_x)
+        
+        
+        # create enemy
+        ene_appear_count += 1
+        if ene_appear_count % enemy_freq_sur_train == 0:
+            ene_total_count += 1
+            ry = np.floor(height / 10)
+            rx = np.random.randint(3, width - 3)
+            pos = [ry, rx]
+            enemies_obj.create_one_enemy(pos)
+        
+        # if the movement includes firing or not
+        if move[1]:
+            score_updater.update_mother_pre(reso, fighter_obj, 
+            enemies_obj)
+            one_fire = fighter_obj.fire_once([cursor_y - 2, cursor_x])
+            fire_fired += 1
+            #print(one_fire)
+        
+        if move[1]:
+            score_updater.update_mother_post(one_fire)
+        
+        # check collisions and then update the objects
+        collision(enemies_obj, fighter_obj, stats)
+        fighter_obj.update_fires()
+        enemies_obj.update_enemies()
+        enemies_obj.update_topedoes()
+        
+        # Render status bar
+        statusbarstr = "Press 'q' to exit " + \
+            "| {}, {}, {} | score : {}, life left: {}".format(cursor_x, cursor_y,
+                move_passed, stats['score'], stats['lives'])
+        render_status_bar(stdscr, statusbarstr, height, width)
+        
+        
+        # Refresh the screen
+        stdscr.refresh()
+        
+    else:
+        
+        
+        score_updater.write_mother()
+        
+        logger = logging.getLogger('training_results')
+        if_using_srv_training = ('Using survival training predicter: ' + 
+            str(yon_sctraining_using_svt) +  '\nUsing random steps: ' + 
+            str(not yon_sctraining_using_svt) + '\n')
+        ot_str = ('After score training, \n' + if_using_srv_training + 
+            "number of movements: {}, number of fires: {} \n".format(
+                move_passed, fire_fired) + 
+            "score : {}, life consumed: {} \n".format(
+                stats['score'], starting_lives - stats['lives']))
+        logger.info(ot_str)
+        
+        return [move_passed, fire_fired, 
+            stats['score'], starting_lives - stats['lives']]
+        
     pass
 
 def draw_menu(stdscr):
@@ -804,13 +1132,16 @@ def score_data():
 def score_data_no_interrupt(repeat_times):
     
     move_counts = 12000
-    data = [['Lives Consumed', 'Score', 'Fires', 'Moves', 'Ratio(M/L)', 'Ratio(S/L)', 'Ratio(S/F)']]
+    data = [['Lives Consumed', 'Score', 'Fires', 'Moves',
+        'Ratio(Lives / Mov)', 'Ratio(Score / Mov)', 'Ratio(Score / Fires)']]
     for count in range(repeat_times):
-        mp, sc, lil = curses.wrapper(
+        mp, frs, sc, lil = curses.wrapper(
             draw_menu_score_data_no_interrupt, move_counts)
-        ratio_ml = float(lil) / float(mp)
-        ratio_sl = float(sc) / float(mp)
-        data.append([lil, sc, mp, ratio_ml, ratio_sl])
+        ratio_lm = float(lil) / float(mp)
+        ratio_sm = float(sc) / float(mp)
+        ratio_sf = float(sc) / float(frs)
+        data.append([lil, sc, frs, mp,
+            ratio_lm, ratio_sm, ratio_sf])
     data_np = np.array(data)
     data_np = np.transpose(data_np)
     data_np_list = data_np.tolist()
@@ -825,11 +1156,11 @@ def score_data_no_interrupt(repeat_times):
     
     
     logger = logging.getLogger('no_interrupt')
-    no_fire_stat = 'no_fires status: ' + \
-        str(nf_global_survival_training) + '\n'
     enemy_freq_stat = 'enemy freq status: ' + \
         str(enemy_freq_sur_train) + '\n'
-    ot_str = no_fire_stat + enemy_freq_stat + \
+    survial_training = ('using survival training: ' +
+        str(yon_sctraining_using_svt) + '\n')
+    ot_str = survial_training + enemy_freq_stat + \
         'Before score training: \n' + table_output
     logger.info(ot_str)
     
@@ -837,14 +1168,18 @@ def game_after_score_training():
     curses.wrapper(draw_menu_after_score)
     
 def game_after_score_training_no_interrupt(repeat_times):
+    
     move_counts = 12000
-    data = [['Lives Consumed', 'Score', 'Moves', 'Ratio(M/L)', 'Ratio(S/L)']]
+    data = [['Lives Consumed', 'Score', 'Fires', 'Moves',
+        'Ratio(Lives / Mov)', 'Ratio(Score / Mov)', 'Ratio(Score / Fires)']]
     for count in range(repeat_times):
-        mp, sc, lil = curses.wrapper(
+        mp, frs, sc, lil = curses.wrapper(
             draw_menu_after_score_no_interrupt, move_counts)
-        ratio_ml = float(lil) / float(mp)
-        ratio_sl = float(sc) / float(mp)
-        data.append([lil, sc, mp, ratio_ml, ratio_sl])
+        ratio_lm = float(lil) / float(mp)
+        ratio_sm = float(sc) / float(mp)
+        ratio_sf = float(sc) / float(frs)
+        data.append([lil, sc, frs, mp,
+            ratio_lm, ratio_sm, ratio_sf])
     data_np = np.array(data)
     data_np = np.transpose(data_np)
     data_np_list = data_np.tolist()
@@ -859,11 +1194,11 @@ def game_after_score_training_no_interrupt(repeat_times):
     
     
     logger = logging.getLogger('no_interrupt')
-    no_fire_stat = 'no_fires status: ' + \
-        str(nf_global_survival_training) + '\n'
     enemy_freq_stat = 'enemy freq status: ' + \
         str(enemy_freq_sur_train) + '\n'
-    ot_str = no_fire_stat + enemy_freq_stat + \
+    survial_training = ('using survival training: ' +
+        str(yon_sctraining_using_svt) + '\n')
+    ot_str = survial_training + enemy_freq_stat + \
         'After score training: \n' + table_output
     logger.info(ot_str)
 
