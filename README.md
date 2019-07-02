@@ -23,7 +23,7 @@ python game.py sv_t 5         # using automated survival training data collectio
 The game is written in curses on python 3.6. It is a simple shooting game. Moving the fighter requires input from keyboard, using up/down/left/right arrows. Shooting fire needs the input from keyboard of letter 'z'.
 
 <p align="center">
-  <img src="https://github.com/piecesofreg09/curses_demon_star/blob/master/Pics/simple_game.PNG" height='250px' />
-  <img src="https://github.com/piecesofreg09/curses_demon_star/blob/master/Pics/game_over.PNG" height='250px' />
+  <img src="https://github.com/piecesofreg09/curses_demon_star/blob/master/Pics/simple_game.PNG" width='350px' />
+  <img src="https://github.com/piecesofreg09/curses_demon_star/blob/master/Pics/game_over.PNG" width='350px' />
 </p>
 
