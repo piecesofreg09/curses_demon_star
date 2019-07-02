@@ -7,7 +7,14 @@ Usage:
 
 ~~~
 python game.py [option] [repeat_times]
+options include: g, sv_t, sv_g, sc_t, sc_g
+#Examples
+
+python game.py                # simply play the game
+python game.py sv_t           # survival training data collection
+python game.py sv_t 5         # using automated survival training data collection, repeat 5 times
 ~~~
+
 
 ## 1. Writing the game
 
