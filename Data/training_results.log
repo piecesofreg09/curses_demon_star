@@ -1427,3 +1427,38 @@ Using random steps: False
 number of movements: 121, number of fires: 31 
 score : 2, life consumed: 0 
 
+2019-07-02 13:59:27,553 - training_results - INFO - 
+ After score training, 
+Using survival training predicter: True
+Using random steps: False
+number of movements: 121, number of fires: 24 
+score : 0, life consumed: 0 
+
+2019-07-02 13:59:28,909 - training_results - INFO - 
+ After score training, 
+Using survival training predicter: True
+Using random steps: False
+number of movements: 121, number of fires: 29 
+score : 2, life consumed: 1 
+
+2019-07-02 13:59:30,232 - training_results - INFO - 
+ After score training, 
+Using survival training predicter: True
+Using random steps: False
+number of movements: 121, number of fires: 34 
+score : 4, life consumed: 0 
+
+2019-07-02 13:59:31,715 - training_results - INFO - 
+ After score training, 
+Using survival training predicter: True
+Using random steps: False
+number of movements: 121, number of fires: 29 
+score : 2, life consumed: 0 
+
+2019-07-02 13:59:33,071 - training_results - INFO - 
+ After score training, 
+Using survival training predicter: True
+Using random steps: False
+number of movements: 121, number of fires: 31 
+score : 5, life consumed: 0 
+

@@ -521,3 +521,19 @@ After score training:
 |Ratio(Score / Fires)|   0.036|  0|  0.097|  0.0909|  0.065|  0.0576|
 |Ratio(Score/F/M, %) |   0.030|  0|  0.080|  0.0751|  0.053|  0.0476|
 
+2019-07-02 13:59:34,523 - no_interrupt - INFO - 
+ using survival training: True
+enemy freq status: 8
+After score training: 
+# collecting data after score training
+|                    | 1 |   2    |   3   |   4   |   5   |average |
+|--------------------|--:|-------:|------:|------:|------:|-------:|
+|Lives Consumed      |  0|  1.0000|  0.000|  0.000|  0.000|  0.2000|
+|Score               |  0|  2.0000|  4.000|  2.000|  5.000|  2.6000|
+|Fires               | 24| 29.0000| 34.000| 29.000| 31.000| 29.4000|
+|Moves               |121|121.0000|121.000|121.000|121.000|121.0000|
+|Ratio(Lives / Mov)  |  0|  0.0083|  0.000|  0.000|  0.000|  0.0017|
+|Ratio(Score / Mov)  |  0|  0.0165|  0.033|  0.017|  0.041|  0.0215|
+|Ratio(Score / Fires)|  0|  0.0690|  0.118|  0.069|  0.161|  0.0834|
+|Ratio(Score/F/M, %) |  0|  0.0570|  0.097|  0.057|  0.133|  0.0689|
+

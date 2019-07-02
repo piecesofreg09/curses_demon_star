@@ -78,9 +78,12 @@ def init_screen(stdscr):
     stdscr.nodelay(1)
     height, width = stdscr.getmaxyx()
     reso = [height, width]
+    
     height, width = default_win_size
     reso = default_win_size
     win = curses.newwin(default_win_size[0], default_win_size[1])
+    win.nodelay(1)
+    win.keypad(True)
     return [height, width, reso, win]
 
 def init_game_stats(stdscr, reso, color_changable,
@@ -962,20 +965,20 @@ def draw_menu(stdscr1):
         # Initialization
         stdscr.clear()
         
-        # get the movements from the move_sets list
         
-        if k == curses.KEY_DOWN:
+        if k == KEY_DOWN:
             cursor_y = cursor_y + 1
             move_passed += 1
-        elif k == curses.KEY_UP:
+        elif k == KEY_UP:
             cursor_y = cursor_y - 1
             move_passed += 1
-        elif k == curses.KEY_RIGHT:
+        elif k == KEY_RIGHT:
             cursor_x = cursor_x + 1
             move_passed += 1
-        elif k == curses.KEY_LEFT:
+        elif k == KEY_LEFT:
             cursor_x = cursor_x - 1
             move_passed += 1
+        
 
         cursor_x = max(8, cursor_x)
         cursor_x = min(width - 8, cursor_x)
@@ -999,7 +1002,8 @@ def draw_menu(stdscr1):
         # create enemy
         # in the game mode, x is create enemy
         ene_appear_count += 1
-        if k == 120:
+        #if k == 120:
+        if ene_appear_count % 6 == 1:
             ene_total_count += 1
             ry = np.floor(height / 10)
             rx = np.random.randint(3, width - 3)
@@ -1025,6 +1029,7 @@ def draw_menu(stdscr1):
 
         # Wait for next input
         k = stdscr.getch()
+        #print(k)
     
     else:
         k = stdscr.getch()

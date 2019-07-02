@@ -1,0 +1,5 @@
+numpy
+pandas
+pytablewriter
+keras
+sklearn
