@@ -29,8 +29,8 @@ The game is written in curses on python 3.6. It is a simple shooting game. The b
 Moving the fighter requires input from keyboard, using up/down/left/right arrows. Shooting fire needs the input from keyboard of letter 'z'. On the bottom of the screen, the **score** (number of enemies eliminated) and the **life left** are shown.
 
 <p align="center">
-  <img src="https://github.com/piecesofreg09/curses_demon_star/blob/master/Pics/simple_game.PNG" width='350px' />
-  <img src="https://github.com/piecesofreg09/curses_demon_star/blob/master/Pics/game_over.PNG" width='350px' />
+  <img src="https://github.com/piecesofreg09/curses_demon_star/blob/master/Pics/simple_game.PNG" width='450px' />
+  <img src="https://github.com/piecesofreg09/curses_demon_star/blob/master/Pics/game_over.PNG" width='250px' />
 </p>
 
 Game strategy:
